@@ -6,14 +6,12 @@
     <title>ของขวัญเล็กๆ จากใจเค้า 💌</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Mali & Prompt สำหรับฟอนต์ภาษาไทยที่น่ารักและอ่านง่าย -->
+    <!-- Google Fonts: Mali & Prompt -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mali:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <!-- Canvas Confetti สำหรับเอฟเฟกต์พลุหัวใจเมื่อกดยกโทษ -->
+    <!-- Canvas Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <!-- Tone.js สำหรับเสียงเอฟเฟกต์น่ารักๆ -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
 
     <style>
         body {
@@ -29,7 +27,6 @@
             font-family: 'Prompt', sans-serif;
         }
 
-        /* แอนิเมชันลอยตัวเบาๆ */
         @keyframes float {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
             50% { transform: translateY(-10px) rotate(2deg); }
@@ -38,7 +35,6 @@
             animation: float 3.5s ease-in-out infinite;
         }
 
-        /* แอนิเมชันหัวใจเต้น */
         @keyframes heartbeat {
             0%, 100% { transform: scale(1); }
             15% { transform: scale(1.18); }
@@ -50,7 +46,6 @@
             animation: heartbeat 2s infinite;
         }
 
-        /* แอนิเมชันซองจดหมายสั่นดุ๊กดิ๊ก */
         @keyframes wiggle {
             0%, 100% { transform: rotate(-2deg); }
             50% { transform: rotate(2deg); }
@@ -59,7 +54,6 @@
             animation: wiggle 2s ease-in-out infinite;
         }
 
-        /* แอนิเมชันหัวใจลอยพื้นหลัง */
         .floating-bg-heart {
             position: fixed;
             bottom: -40px;
@@ -81,7 +75,7 @@
             }
         }
 
-        /* เอฟเฟกต์เปิดซองจดหมาย */
+        /* Envelope Open Effect */
         .envelope-flap {
             transform-origin: top;
             transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
@@ -91,32 +85,30 @@
             z-index: 1;
         }
         .envelope-letter {
-            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s;
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.25s;
         }
         .envelope-open .envelope-letter {
-            transform: translateY(-45px);
+            transform: translateY(-48px);
         }
 
-        /* การ์ดกระจกนุ่มนวล */
+        /* Glass Card */
         .glass-card {
-            background: rgba(255, 255, 255, 0.88);
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 2px solid rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(255, 255, 255, 0.95);
             box-shadow: 0 12px 32px rgba(244, 63, 94, 0.12);
         }
 
-        /* เอฟเฟกต์วิบวับเมื่อเปิดแคปซูลสัญญาใจ */
         @keyframes starPop {
-            0% { transform: scale(0.85) rotate(-6deg); opacity: 0.5; }
-            60% { transform: scale(1.06) rotate(2deg); opacity: 1; }
+            0% { transform: scale(0.88) rotate(-4deg); opacity: 0.6; }
+            60% { transform: scale(1.05) rotate(2deg); opacity: 1; }
             100% { transform: scale(1) rotate(0deg); opacity: 1; }
         }
         .promise-opened {
             animation: starPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
 
-        /* เอฟเฟกต์กอดเด้งดึ๋ง */
         @keyframes hugSquish {
             0%, 100% { transform: scale(1, 1); }
             35% { transform: scale(1.18, 0.88); }
@@ -126,7 +118,20 @@
             animation: hugSquish 0.5s ease-out;
         }
 
-        /* Custom Scrollbar */
+        .section-fade {
+            animation: fadeInScale 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: translateY(16px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -137,78 +142,54 @@
             background: #fda4af;
             border-radius: 9999px;
         }
-
-        /* การเปลี่ยนหน้าแบบนุ่มนวล */
-        .section-fade {
-            animation: fadeInScale 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        @keyframes fadeInScale {
-            from {
-                opacity: 0;
-                transform: translateY(18px) scale(0.97);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
     </style>
 </head>
 <body class="relative selection:bg-rose-200 selection:text-rose-900">
 
-    <!-- พื้นหลังหัวใจลอย -->
+    <!-- Background Floating Hearts -->
     <div id="floating-hearts-container" class="fixed inset-0 pointer-events-none overflow-hidden z-0"></div>
 
-    <!-- แถบเครื่องมือด้านบน (ปุ่มเสียง & ปุ่มแก้ไขสำหรับคนทำเว็บ) -->
+    <!-- Top Floating Controls -->
     <header class="fixed top-0 left-0 right-0 z-40 px-4 py-3 flex justify-between items-center pointer-events-none">
-        <button id="sound-toggle-btn" onclick="toggleSound()" class="pointer-events-auto bg-white/80 hover:bg-white text-rose-500 border border-rose-200 shadow-sm rounded-full px-3.5 py-2 text-xs sm:text-sm font-semibold flex items-center gap-1.5 transition active:scale-95">
+        <button id="sound-toggle-btn" type="button" class="pointer-events-auto bg-white/85 hover:bg-white text-rose-500 border border-rose-200 shadow-sm rounded-full px-3.5 py-2 text-xs sm:text-sm font-semibold flex items-center gap-1.5 transition active:scale-95">
             <span id="sound-icon">🔇</span>
-            <span id="sound-text" class="hidden sm:inline">เปิดเสียงน่ารักๆ</span>
+            <span id="sound-text">เปิดเพลงคลอเบาๆ คั้บ</span>
         </button>
 
-        <div class="flex items-center gap-2 pointer-events-auto">
-            <button id="edit-mode-btn" onclick="openEditModal()" class="bg-white/85 hover:bg-white text-rose-600 border border-rose-200 shadow-sm rounded-full px-3.5 py-2 text-xs sm:text-sm font-semibold flex items-center gap-1.5 transition active:scale-95">
-                <span>✏️</span>
-                <span>แก้ไขข้อความ</span>
-            </button>
-        </div>
+        <button id="edit-mode-btn" type="button" class="pointer-events-auto bg-white/85 hover:bg-white text-rose-600 border border-rose-200 shadow-sm rounded-full px-3.5 py-2 text-xs sm:text-sm font-semibold flex items-center gap-1.5 transition active:scale-95">
+            <span>✏️</span>
+            <span>แก้ไขข้อความ</span>
+        </button>
     </header>
 
     <!-- Main Container -->
     <main class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-16 sm:py-20 max-w-lg mx-auto">
 
         <!-- ==========================================
-             STEP 1: LANDING / ENVELOPE OPENING
+             STAGE 1: ENVELOPE INTRO
         =========================================== -->
         <section id="step-1" class="w-full text-center section-fade">
-            <!-- น้องหมีถือหัวใจ SVG Art -->
+            <!-- Cute Animated Bear Holding Heart -->
             <div class="animate-float mx-auto w-36 h-36 sm:w-44 sm:h-44 mb-2 relative">
                 <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-md">
-                    <!-- หูหมี -->
                     <circle cx="58" cy="58" r="24" fill="#d99b66" stroke="#7c4a21" stroke-width="4"/>
                     <circle cx="58" cy="58" r="13" fill="#f7c8a0"/>
                     <circle cx="142" cy="58" r="24" fill="#d99b66" stroke="#7c4a21" stroke-width="4"/>
                     <circle cx="142" cy="58" r="13" fill="#f7c8a0"/>
-                    <!-- หัวหมี -->
                     <ellipse cx="100" cy="105" rx="58" ry="50" fill="#e5aa70" stroke="#7c4a21" stroke-width="4"/>
-                    <!-- แก้มแดง -->
                     <ellipse cx="66" cy="114" rx="11" ry="7" fill="#ff8fa3" opacity="0.75"/>
                     <ellipse cx="134" cy="114" rx="11" ry="7" fill="#ff8fa3" opacity="0.75"/>
-                    <!-- ตา -->
                     <circle cx="77" cy="98" r="5.5" fill="#4a2c11"/>
                     <circle cx="79" cy="96" r="2" fill="#ffffff"/>
                     <circle cx="123" cy="98" r="5.5" fill="#4a2c11"/>
                     <circle cx="125" cy="96" r="2" fill="#ffffff"/>
-                    <!-- จมูกและปาก -->
                     <ellipse cx="100" cy="112" rx="17" ry="13" fill="#fff3e6"/>
                     <ellipse cx="100" cy="107" rx="6" ry="4.5" fill="#5c3614"/>
                     <path d="M93 115 Q100 122 107 115" fill="none" stroke="#5c3614" stroke-width="3" stroke-linecap="round"/>
-                    <!-- หัวใจที่น้องหมีถือ -->
                     <g class="animate-heartbeat" style="transform-origin: 100px 155px;">
                         <path d="M100 182 C100 182 65 158 65 138 C65 126 75 119 85 119 C92 119 97 123 100 128 C103 123 108 119 115 119 C125 119 135 126 135 138 C135 158 100 182 100 182 Z" fill="#fb7185" stroke="#be123c" stroke-width="3"/>
                         <path d="M77 133 Q82 127 88 129" fill="none" stroke="#ffe4e6" stroke-width="2.5" stroke-linecap="round"/>
                     </g>
-                    <!-- มือหมีกอดหัวใจ -->
                     <circle cx="67" cy="148" r="12" fill="#e5aa70" stroke="#7c4a21" stroke-width="3.5"/>
                     <circle cx="133" cy="148" r="12" fill="#e5aa70" stroke="#7c4a21" stroke-width="3.5"/>
                 </svg>
@@ -225,19 +206,16 @@
                 ลองเปิดซองจดหมายใบนี้ดูนะคั้บ เค้าตั้งใจทำสิ่งนี้ให้เธอเลย 🌷
             </p>
 
-            <!-- ซองจดหมาย Interactive -->
-            <div id="envelope-wrapper" onclick="openEnvelope()" class="cursor-pointer mx-auto w-72 sm:w-80 h-48 relative mb-8 select-none animate-wiggle group">
-                <!-- ตัวซองด้านหลัง -->
+            <!-- 3D-style Interactive Envelope -->
+            <div id="envelope-wrapper" class="cursor-pointer mx-auto w-72 sm:w-80 h-48 relative mb-8 select-none animate-wiggle group">
                 <div class="absolute inset-0 bg-rose-200 rounded-2xl shadow-xl border-2 border-rose-300"></div>
-                
-                <!-- กระดาษจดหมายด้านใน -->
+
                 <div class="envelope-letter absolute left-4 right-4 top-4 bottom-4 bg-white rounded-xl shadow-md p-4 flex flex-col items-center justify-center border border-rose-100 z-10">
                     <span class="text-2xl mb-1">💝</span>
-                    <p class="text-rose-600 font-bold text-sm">For You Only</p>
+                    <p class="text-rose-600 font-bold text-sm">For You Only คั้บ</p>
                     <p class="text-rose-400 text-xs mt-0.5">จาก <span class="sender-name-display">เค้าเอง</span></p>
                 </div>
 
-                <!-- ฝาซองด้านล่างและด้านข้าง -->
                 <div class="absolute inset-0 z-20 pointer-events-none overflow-hidden rounded-2xl">
                     <svg viewBox="0 0 320 192" class="w-full h-full">
                         <polygon points="0,0 160,105 0,192" fill="#fecdd3"/>
@@ -246,26 +224,23 @@
                     </svg>
                 </div>
 
-                <!-- ฝาซองด้านบน (เปิดได้) -->
                 <div class="envelope-flap absolute top-0 left-0 right-0 h-28 z-30 pointer-events-none">
                     <svg viewBox="0 0 320 112" class="w-full h-full drop-shadow-sm">
                         <polygon points="0,0 320,0 160,105" fill="#fb7185"/>
                     </svg>
-                    <!-- สติกเกอร์หัวใจปิดซอง -->
                     <div class="absolute bottom-1 left-1/2 -translate-x-1/2 w-11 h-11 bg-white rounded-full shadow-md flex items-center justify-center text-xl border-2 border-rose-200 group-hover:scale-110 transition">
                         💌
                     </div>
                 </div>
             </div>
 
-            <button onclick="openEnvelope()" class="w-full sm:w-auto bg-gradient-to-r from-rose-400 via-pink-500 to-rose-500 hover:from-rose-500 hover:to-pink-600 text-white font-bold text-base sm:text-lg px-8 py-4 rounded-full shadow-lg shadow-rose-300/60 transform transition active:scale-95 flex items-center justify-center gap-2 mx-auto">
-                <span>เปิดดูของขวัญจากเค้าหน่อยนะคั้บ</span>
-                <span class="text-xl">💌</span>
+            <button id="open-envelope-btn" type="button" class="w-full sm:w-auto bg-gradient-to-r from-rose-400 via-pink-500 to-rose-500 hover:from-rose-500 hover:to-pink-600 text-white font-bold text-base sm:text-lg px-8 py-4 rounded-full shadow-lg shadow-rose-300/60 transform transition active:scale-95 flex items-center justify-center gap-2 mx-auto">
+                <span>เปิดดูของขวัญจากเค้าหน่อยนะคั้บ 💌</span>
             </button>
         </section>
 
         <!-- ==========================================
-             STEP 2: APPRECIATION CARDS (ขอบคุณที่อยู่ด้วยกันมา)
+             STAGE 2: THANK YOU CARDS CAROUSEL
         =========================================== -->
         <section id="step-2" class="hidden w-full section-fade">
             <div class="text-center mb-5">
@@ -276,69 +251,66 @@
                     ขอบคุณที่อยู่ด้วยกันมานะคั้บ
                 </h2>
                 <p class="text-rose-700/75 text-xs sm:text-sm mt-1">
-                    กดที่การ์ดหรือปุ่มถัดไปเพื่ออ่านทีละใบนะคั้บ (<span id="card-counter">1</span>/<span id="card-total">4</span>)
+                    แตะที่การ์ดหรือปุ่มถัดไปเพื่ออ่านทีละใบนะคั้บ (<span id="card-counter">1</span>/<span id="card-total">4</span>)
                 </p>
             </div>
 
-            <!-- Deck การ์ดขอบคุณ -->
             <div class="relative w-full min-h-[340px] sm:min-h-[370px] flex items-center justify-center mb-6">
-                <div id="thankyou-card-container" onclick="nextThankYouCard()" class="cursor-pointer w-full glass-card rounded-3xl p-6 sm:p-8 text-center transition-all duration-300 transform hover:-translate-y-1 active:scale-98 relative overflow-hidden">
-                    <!-- ลายตกแต่งมุมการ์ด -->
-                    <div class="absolute -top-6 -right-6 w-24 h-24 bg-rose-100 rounded-full opacity-60"></div>
-                    <div class="absolute -bottom-6 -left-6 w-20 h-20 bg-amber-100 rounded-full opacity-60"></div>
+                <div id="thankyou-card-container" class="cursor-pointer w-full glass-card rounded-3xl p-6 sm:p-8 text-center transition-all duration-300 transform hover:-translate-y-1 active:scale-98 relative overflow-hidden select-none">
+                    <div class="absolute -top-6 -right-6 w-24 h-24 bg-rose-100 rounded-full opacity-60 pointer-events-none"></div>
+                    <div class="absolute -bottom-6 -left-6 w-20 h-20 bg-amber-100 rounded-full opacity-60 pointer-events-none"></div>
 
-                    <div id="card-content" class="relative z-10 flex flex-col items-center justify-center min-h-[260px]">
-                        <!-- เนื้อหาจะถูก render ด้วย JS -->
+                    <div id="card-content" class="relative z-10 flex flex-col items-center justify-center min-h-[250px]">
+                        <!-- Rendered dynamically -->
                     </div>
 
-                    <!-- จุดบอกตำแหน่งการ์ด (Dots) -->
                     <div id="card-dots" class="flex justify-center gap-2 mt-5 relative z-10"></div>
                 </div>
             </div>
 
-            <!-- ปุ่มควบคุมการ์ด -->
             <div class="flex items-center justify-between gap-3">
-                <button id="prev-card-btn" onclick="prevThankYouCard()" class="px-5 py-3.5 rounded-2xl bg-white/80 hover:bg-white text-rose-600 font-bold text-sm border border-rose-200 shadow-xs transition active:scale-95 disabled:opacity-40">
-                    ← ก่อนหน้า
+                <button id="prev-card-btn" type="button" class="px-5 py-3.5 rounded-2xl bg-white/85 hover:bg-white text-rose-600 font-bold text-sm border border-rose-200 shadow-xs transition active:scale-95 disabled:opacity-40">
+                    ← ก่อนหน้าคั้บ
                 </button>
-                <button id="next-card-btn" onclick="nextThankYouCard()" class="flex-1 py-3.5 px-6 rounded-2xl bg-gradient-to-r from-rose-400 to-pink-500 text-white font-bold text-sm sm:text-base shadow-md shadow-rose-200 transition active:scale-95">
-                    ใบถัดไป 💕
+                <button id="next-card-btn" type="button" class="flex-1 py-3.5 px-6 rounded-2xl bg-gradient-to-r from-rose-400 to-pink-500 text-white font-bold text-sm sm:text-base shadow-md shadow-rose-200 transition active:scale-95">
+                    ใบถัดไปคั้บ 💕
                 </button>
             </div>
         </section>
 
         <!-- ==========================================
-             STEP 3: HEARTFELT APOLOGY (คำขอโทษจากใจ + ปุ่มหนี)
+             STAGE 3: APOLOGY WITH RUNAWAY BUTTON
         =========================================== -->
         <section id="step-3" class="hidden w-full section-fade">
-            <div class="glass-card rounded-3xl p-6 sm:p-8 text-center relative overflow-hidden">
-                <!-- ตัวการ์ตูนน้องกระต่ายทำหน้าหงอยขอโทษ -->
+            <div id="apology-card-box" class="glass-card rounded-3xl p-6 sm:p-8 text-center relative overflow-hidden">
+                <!-- Pleading Bear SVG -->
                 <div class="w-28 h-28 mx-auto mb-3 animate-float">
-                    <svg viewBox="0 0 200 200" class="w-full h-full">
-                        <!-- หูกระต่ายตกๆ น่ารัก -->
-                        <path d="M75 75 Q50 20 40 55 Q35 80 68 88" fill="#ffffff" stroke="#f43f5e" stroke-width="4" stroke-linejoin="round"/>
-                        <path d="M125 75 Q150 20 160 55 Q165 80 132 88" fill="#ffffff" stroke="#f43f5e" stroke-width="4" stroke-linejoin="round"/>
-                        <!-- หน้ากระต่าย -->
-                        <ellipse cx="100" cy="115" rx="55" ry="46" fill="#ffffff" stroke="#f43f5e" stroke-width="4"/>
-                        <!-- แก้ม -->
-                        <ellipse cx="66" cy="122" rx="10" ry="6" fill="#fda4af" opacity="0.8"/>
-                        <ellipse cx="134" cy="122" rx="10" ry="6" fill="#fda4af" opacity="0.8"/>
-                        <!-- ตาอ้อนๆ -->
-                        <circle cx="78" cy="108" r="6" fill="#4a353b"/>
-                        <circle cx="76" cy="106" r="2.2" fill="#ffffff"/>
-                        <circle cx="81" cy="110" r="1.2" fill="#ffffff"/>
-                        <circle cx="122" cy="108" r="6" fill="#4a353b"/>
-                        <circle cx="120" cy="106" r="2.2" fill="#ffffff"/>
-                        <circle cx="125" cy="110" r="1.2" fill="#ffffff"/>
-                        <!-- คิ้วตกอ้อนๆ -->
-                        <path d="M68 97 Q78 93 85 98" fill="none" stroke="#4a353b" stroke-width="2.5" stroke-linecap="round"/>
-                        <path d="M132 97 Q122 93 115 98" fill="none" stroke="#4a353b" stroke-width="2.5" stroke-linecap="round"/>
-                        <!-- ปากจุ๊บๆ อ้อน -->
-                        <polygon points="96,118 104,118 100,123" fill="#fb7185"/>
-                        <path d="M94 128 Q100 124 106 128" fill="none" stroke="#4a353b" stroke-width="2.5" stroke-linecap="round"/>
-                        <!-- มือพนมขอโทษ -->
-                        <ellipse cx="94" cy="154" rx="9" ry="14" fill="#fff1f2" stroke="#f43f5e" stroke-width="3"/>
-                        <ellipse cx="106" cy="154" rx="9" ry="14" fill="#fff1f2" stroke="#f43f5e" stroke-width="3"/>
+                    <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-sm">
+                        <circle cx="58" cy="58" r="24" fill="#d99b66" stroke="#7c4a21" stroke-width="4"/>
+                        <circle cx="58" cy="58" r="13" fill="#f7c8a0"/>
+                        <circle cx="142" cy="58" r="24" fill="#d99b66" stroke="#7c4a21" stroke-width="4"/>
+                        <circle cx="142" cy="58" r="13" fill="#f7c8a0"/>
+                        <ellipse cx="100" cy="108" rx="58" ry="48" fill="#e5aa70" stroke="#7c4a21" stroke-width="4"/>
+                        <!-- Pleading teary eyes -->
+                        <circle cx="77" cy="102" r="7" fill="#4a2c11"/>
+                        <circle cx="75" cy="99" r="2.8" fill="#ffffff"/>
+                        <circle cx="80" cy="104" r="1.5" fill="#ffffff"/>
+                        <circle cx="123" cy="102" r="7" fill="#4a2c11"/>
+                        <circle cx="121" cy="99" r="2.8" fill="#ffffff"/>
+                        <circle cx="126" cy="104" r="1.5" fill="#ffffff"/>
+                        <!-- Sad pleading eyebrows -->
+                        <path d="M66 90 Q76 85 85 91" fill="none" stroke="#5c3614" stroke-width="3" stroke-linecap="round"/>
+                        <path d="M134 90 Q124 85 115 91" fill="none" stroke="#5c3614" stroke-width="3" stroke-linecap="round"/>
+                        <!-- Blushing cheeks -->
+                        <ellipse cx="64" cy="116" rx="11" ry="6.5" fill="#fb7185" opacity="0.75"/>
+                        <ellipse cx="136" cy="116" rx="11" ry="6.5" fill="#fb7185" opacity="0.75"/>
+                        <!-- Snout & pleading mouth -->
+                        <ellipse cx="100" cy="117" rx="17" ry="13" fill="#fff3e6"/>
+                        <ellipse cx="100" cy="111" rx="6" ry="4.5" fill="#5c3614"/>
+                        <path d="M93 123 Q100 118 107 123" fill="none" stroke="#5c3614" stroke-width="2.8" stroke-linecap="round"/>
+                        <!-- Pleading hands together -->
+                        <ellipse cx="93" cy="154" rx="10" ry="15" fill="#e5aa70" stroke="#7c4a21" stroke-width="3.5"/>
+                        <ellipse cx="107" cy="154" rx="10" ry="15" fill="#e5aa70" stroke="#7c4a21" stroke-width="3.5"/>
                     </svg>
                 </div>
 
@@ -356,18 +328,18 @@
                     </p>
                 </div>
 
-                <!-- ข้อความอ้อนเวลาคนกดปุ่ม "ยังงอนอยู่" -->
+                <!-- Pleading message bubble -->
                 <div id="pleading-bubble" class="hidden mb-4 bg-amber-50 border border-amber-200 text-amber-800 text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-2xl animate-bounce">
                     งื้อออ อย่าเพิ่งงอนเลยนะคั้บ เค้ารู้ผิดแล้วจริงๆ 🥺🙏
                 </div>
 
-                <!-- โซนปุ่มเลือก ยกโทษ vs ยังงอนอยู่ -->
-                <div id="apology-buttons-area" class="relative min-h-[120px] flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-                    <button id="forgive-btn" onclick="forgiveMe()" class="z-20 bg-gradient-to-r from-emerald-400 to-teal-500 hover:from-emerald-500 hover:to-teal-600 text-white font-bold text-base sm:text-lg px-7 py-3.5 rounded-full shadow-lg shadow-emerald-200 transition-all duration-200 active:scale-95">
-                        ยกโทษให้เค้านะคั้บ 🥺💚
+                <!-- Buttons Area -->
+                <div id="apology-buttons-area" class="relative min-h-[140px] flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+                    <button id="forgive-btn" type="button" class="z-20 bg-gradient-to-r from-emerald-400 to-teal-500 hover:from-emerald-500 hover:to-teal-600 text-white font-bold text-base sm:text-lg px-7 py-3.5 rounded-full shadow-lg shadow-emerald-200 transition-all duration-200 active:scale-95">
+                        ยกโทษให้เค้านะ 🥺💚
                     </button>
 
-                    <button id="sulking-btn" onclick="handleSulkingClick()" class="z-10 bg-rose-100 hover:bg-rose-200 text-rose-600 font-semibold text-sm px-5 py-3 rounded-full border border-rose-300 transition-all duration-200">
+                    <button id="sulking-btn" type="button" class="z-30 bg-rose-100 hover:bg-rose-200 text-rose-600 font-semibold text-sm px-5 py-3 rounded-full border border-rose-300 transition-all duration-150 select-none">
                         ยังงอนอยู่ 😤
                     </button>
                 </div>
@@ -375,10 +347,10 @@
         </section>
 
         <!-- ==========================================
-             STEP 4: LOVE LETTER, PROMISES JAR & VIRTUAL HUG
+             STAGE 4: CELEBRATION, LETTER, PROMISES, HUG & WRITE BACK
         =========================================== -->
         <section id="step-4" class="hidden w-full section-fade space-y-6">
-            <!-- แบนเนอร์ดีใจ -->
+            <!-- Banner -->
             <div class="text-center">
                 <div class="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 border border-emerald-200 px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold mb-2 shadow-xs">
                     <span>🎉</span>
@@ -390,13 +362,13 @@
                 </h2>
             </div>
 
-            <!-- การ์ดจดหมายฉบับเต็ม -->
+            <!-- 1. Full Heartfelt Letter -->
             <div class="glass-card rounded-3xl p-6 sm:p-7 relative overflow-hidden">
                 <div class="flex items-center justify-between border-b border-rose-100 pb-3 mb-4">
                     <div class="flex items-center gap-2">
                         <span class="text-2xl">💌</span>
                         <div>
-                            <h3 class="font-bold text-rose-900 text-base sm:text-lg">จดหมายถึง <span class="partner-name-display">คนเก่ง</span></h3>
+                            <h3 class="font-bold text-rose-900 text-base sm:text-lg">จดหมายถึง <span class="partner-name-display">คนเก่งของเค้า</span></h3>
                             <p class="text-xs text-rose-400">เก็บไว้อ่านเวลาคิดถึงกันนะคั้บ</p>
                         </div>
                     </div>
@@ -412,35 +384,32 @@
                 </div>
             </div>
 
-            <!-- ส่วนที่ 1: แคปซูลความทรงจำ & สัญญาใจ (Our Promises Jar) -->
+            <!-- 2. Our Promises Jar (โหลแคปซูลสัญญาใจ) -->
             <div class="glass-card rounded-3xl p-5 sm:p-6 relative overflow-hidden">
                 <div class="text-center mb-4">
                     <span class="inline-block bg-amber-100 text-amber-700 text-xs font-bold px-3.5 py-1 rounded-full mb-1.5 border border-amber-200">
-                        ✨ แคปซูลสัญญาใจของเรา
+                        ✨ โหลแคปซูลสัญญาใจของเรา
                     </span>
                     <h3 class="text-lg sm:text-xl font-bold text-rose-900">
-                        โหลคำสัญญาจากเค้าถึงเธอคั้บ 🫙💖
+                        คำสัญญาจากเค้าถึงเธอคั้บ 🫙💖
                     </h3>
                     <p class="text-xs text-rose-600/80 mt-0.5">
                         ลองแตะที่ดวงดาวหัวใจแต่ละดวงเพื่อเปิดอ่านคำสัญญาดูนะคั้บ (<span id="promises-opened-count">0</span>/<span id="promises-total-count">4</span>)
                     </p>
                 </div>
 
-                <!-- กราฟิกโหลแก้วเก็บคำสัญญา + การ์ดดาวหัวใจ -->
                 <div class="bg-gradient-to-b from-amber-50/80 via-rose-50/70 to-pink-100/60 border-2 border-amber-200/80 rounded-3xl p-4 sm:p-5 relative">
-                    <!-- ฝาโหลแก้วด้านบน -->
                     <div class="w-28 h-3 bg-amber-200/90 rounded-full mx-auto -mt-6 mb-4 border border-amber-300 shadow-xs"></div>
-
                     <div id="promises-list" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <!-- แคปซูลคำสัญญาจะถูกสร้างด้วย JS -->
+                        <!-- Rendered dynamically -->
                     </div>
                 </div>
             </div>
 
-            <!-- ส่วนที่ 2: โหมดส่งกอด & หลอดวัดความรัก (Virtual Hug & Love Meter) -->
+            <!-- 3. Virtual Hug & Love Meter (ส่งกอด & หลอดวัดความรัก) -->
             <div class="glass-card rounded-3xl p-5 sm:p-6 text-center relative overflow-hidden">
                 <span class="inline-block bg-pink-100 text-pink-600 text-xs font-bold px-3.5 py-1 rounded-full mb-2 border border-pink-200">
-                    🫂 โหมดส่งกอด & เติมพลังใจ
+                    🫂 ส่งกอด & หลอดวัดความรัก
                 </span>
                 <h3 class="text-lg sm:text-xl font-bold text-rose-900 mb-1">
                     ส่งกอดแน่นๆ ให้กันหน่อยนะคั้บ
@@ -449,35 +418,28 @@
                     กดปุ่มส่งกอดด้านล่างเพื่อเติมหลอดความรักให้เต็ม 100% เลยคั้บ!
                 </p>
 
-                <!-- น้องหมีแก้มแดงรอกอด -->
+                <!-- Blushing Bear SVG -->
                 <div id="hug-bear-wrapper" class="w-28 h-28 mx-auto mb-3 transition-transform select-none">
                     <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-sm">
-                        <!-- หูหมี -->
                         <circle cx="58" cy="58" r="24" fill="#d99b66" stroke="#7c4a21" stroke-width="4"/>
                         <circle cx="58" cy="58" r="13" fill="#f7c8a0"/>
                         <circle cx="142" cy="58" r="24" fill="#d99b66" stroke="#7c4a21" stroke-width="4"/>
                         <circle cx="142" cy="58" r="13" fill="#f7c8a0"/>
-                        <!-- หัวหมี -->
                         <ellipse cx="100" cy="105" rx="58" ry="50" fill="#e5aa70" stroke="#7c4a21" stroke-width="4"/>
-                        <!-- แก้มแดงระเรื่อ (เข้มขึ้นเมื่อกอด) -->
                         <ellipse id="bear-cheek-left" cx="65" cy="114" rx="13" ry="8" fill="#fb7185" opacity="0.65"/>
                         <ellipse id="bear-cheek-right" cx="135" cy="114" rx="13" ry="8" fill="#fb7185" opacity="0.65"/>
-                        <!-- ตายิ้มมีความสุข -->
                         <path d="M68 98 Q77 88 86 98" fill="none" stroke="#4a2c11" stroke-width="4" stroke-linecap="round"/>
                         <path d="M114 98 Q123 88 132 98" fill="none" stroke="#4a2c11" stroke-width="4" stroke-linecap="round"/>
-                        <!-- จมูกและปากยิ้มกว้าง -->
                         <ellipse cx="100" cy="113" rx="17" ry="13" fill="#fff3e6"/>
                         <ellipse cx="100" cy="107" rx="6" ry="4.5" fill="#5c3614"/>
                         <path d="M91 114 Q100 125 109 114" fill="#fb7185" stroke="#5c3614" stroke-width="2.5" stroke-linecap="round"/>
-                        <!-- หัวใจดวงโต -->
                         <path d="M100 182 C100 182 62 156 62 136 C62 123 73 116 84 116 C91 116 97 120 100 126 C103 120 109 116 116 116 C127 116 138 123 138 136 C138 156 100 182 100 182 Z" fill="#f43f5e" stroke="#be123c" stroke-width="3"/>
-                        <!-- แขนหมีอ้ากอด -->
                         <ellipse cx="56" cy="144" rx="15" ry="11" transform="rotate(-25 56 144)" fill="#e5aa70" stroke="#7c4a21" stroke-width="3.5"/>
                         <ellipse cx="144" cy="144" rx="15" ry="11" transform="rotate(25 144 144)" fill="#e5aa70" stroke="#7c4a21" stroke-width="3.5"/>
                     </svg>
                 </div>
 
-                <!-- หลอดวัดความรัก (Love & Forgiveness Meter) -->
+                <!-- Love Meter Bar -->
                 <div class="max-w-xs mx-auto mb-5">
                     <div class="flex justify-between text-xs font-bold text-rose-700 mb-1.5 px-1">
                         <span>ระดับความรัก & หายงอน</span>
@@ -490,16 +452,71 @@
                     </div>
                 </div>
 
-                <!-- ปุ่มส่งกอด -->
-                <button id="send-hug-btn" onclick="sendVirtualHug()" class="w-full sm:w-auto bg-gradient-to-r from-rose-400 via-pink-500 to-amber-400 hover:from-rose-500 hover:to-pink-600 text-white font-bold text-base px-8 py-3.5 rounded-full shadow-lg shadow-rose-200 transform transition active:scale-90 flex items-center justify-center gap-2 mx-auto">
+                <button id="send-hug-btn" type="button" class="w-full sm:w-auto bg-gradient-to-r from-rose-400 via-pink-500 to-amber-400 hover:from-rose-500 hover:to-pink-600 text-white font-bold text-base px-8 py-3.5 rounded-full shadow-lg shadow-rose-200 transform transition active:scale-90 flex items-center justify-center gap-2 mx-auto">
                     <span>ส่งกอดให้เค้าหน่อยคั้บ</span>
                     <span class="text-xl">🫂💕</span>
                 </button>
             </div>
 
-            <!-- ปุ่มเล่นซ้ำ / กลับหน้าแรก -->
+            <!-- 4. Write Back to Me (เขียนข้อความตอบกลับถึงเค้า) -->
+            <div class="glass-card rounded-3xl p-5 sm:p-6 relative overflow-hidden">
+                <div class="text-center mb-4">
+                    <span class="inline-block bg-emerald-100 text-emerald-700 text-xs font-bold px-3.5 py-1 rounded-full mb-1.5 border border-emerald-200">
+                        💌 เขียนข้อความตอบกลับถึงเค้า
+                    </span>
+                    <h3 class="text-lg sm:text-xl font-bold text-rose-900">
+                        อยากบอกอะไรกับเค้าไหมคั้บ?
+                    </h3>
+                    <p class="text-xs sm:text-sm text-rose-600/85 mt-0.5">
+                        เลือกความรู้สึกแล้วพิมพ์บอกเค้าได้เลยคั้บ ข้อความจะส่งตรงเข้าหาเค้าทันทีเลย!
+                    </p>
+                </div>
+
+                <form id="reply-form" class="space-y-4 font-prompt">
+                    <!-- Mood Stickers -->
+                    <div>
+                        <label class="block text-xs font-bold text-rose-800 mb-2">
+                            เลือกสติกเกอร์ความรู้สึกตอนนี้หน่อยนะคั้บ:
+                        </label>
+                        <div id="mood-tags-container" class="flex flex-wrap gap-2">
+                            <button type="button" data-mood="หายงอนแล้ว 💚" class="mood-tag-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border-2 border-emerald-400 shadow-xs transition active:scale-95">
+                                หายงอนแล้ว 💚
+                            </button>
+                            <button type="button" data-mood="รักนะ 🥺" class="mood-tag-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/85 text-rose-700 border border-rose-200 hover:bg-rose-50 transition active:scale-95">
+                                รักนะ 🥺
+                            </button>
+                            <button type="button" data-mood="กอดหน่อย 🫂" class="mood-tag-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/85 text-rose-700 border border-rose-200 hover:bg-rose-50 transition active:scale-95">
+                                กอดหน่อย 🫂
+                            </button>
+                            <button type="button" data-mood="เลี้ยงหนมด้วย 🍰" class="mood-tag-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/85 text-amber-700 border border-amber-200 hover:bg-amber-50 transition active:scale-95">
+                                เลี้ยงหนมด้วย 🍰
+                            </button>
+                        </div>
+                        <input type="hidden" id="selected-mood-input" value="หายงอนแล้ว 💚">
+                    </div>
+
+                    <!-- Message Textarea -->
+                    <div>
+                        <label for="reply-message-input" class="block text-xs font-bold text-rose-800 mb-1.5">
+                            ข้อความถึง <span class="sender-name-display">เค้าเอง</span>:
+                        </label>
+                        <textarea id="reply-message-input" rows="3" required placeholder="พิมพ์อะไรบอกเค้าก็ได้นะคั้บ เช่น หายงอนแล้วน้า ทีหลังอย่าทำอีกนะ 🥺💚" class="w-full px-4 py-3 rounded-2xl border border-rose-200 focus:outline-none focus:border-rose-400 bg-white/95 text-sm text-rose-900 placeholder:text-rose-300 resize-none"></textarea>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button id="submit-reply-btn" type="submit" class="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-emerald-400 via-teal-500 to-emerald-500 hover:from-emerald-500 hover:to-teal-600 text-white font-bold text-sm sm:text-base shadow-md shadow-emerald-200/80 transition transform active:scale-95 flex items-center justify-center gap-2">
+                        <span id="submit-reply-icon">📨</span>
+                        <span id="submit-reply-text">ส่งข้อความตอบกลับให้เค้าคั้บ</span>
+                    </button>
+
+                    <!-- Confirmation / Status Card + Copy Fallback -->
+                    <div id="reply-status-box" class="hidden rounded-2xl p-4 text-xs sm:text-sm leading-relaxed space-y-2.5"></div>
+                </form>
+            </div>
+
+            <!-- Restart Button -->
             <div class="text-center pt-2 pb-6">
-                <button onclick="restartExperience()" class="text-xs sm:text-sm text-rose-500 hover:text-rose-700 underline font-semibold">
+                <button id="restart-btn" type="button" class="text-xs sm:text-sm text-rose-500 hover:text-rose-700 underline font-semibold">
                     ↺ เปิดอ่านอีกรอบตั้งแต่ต้นคั้บ
                 </button>
             </div>
@@ -508,46 +525,39 @@
     </main>
 
     <!-- ==========================================
-         MODAL: CUSTOMIZATION MODE (โหมดแก้ไขข้อความ)
+         MODAL: CUSTOMIZATION MODE
     =========================================== -->
     <div id="edit-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-rose-950/50 backdrop-blur-xs p-3 sm:p-5">
         <div class="bg-white rounded-3xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl border-2 border-rose-200 section-fade overflow-hidden">
-            <!-- Header Modal -->
             <div class="px-5 py-4 bg-rose-50 border-b border-rose-100 flex items-center justify-between">
                 <div>
                     <h3 class="font-bold text-rose-900 text-base sm:text-lg flex items-center gap-1.5">
-                        <span>✏️</span> ปรับแต่งข้อความของคู่เรา
+                        <span>✏️</span> ปรับแต่งข้อความของคู่เราคั้บ
                     </h3>
-                    <p class="text-xs text-rose-500">แก้ไขเสร็จแล้วกดบันทึก และสามารถก๊อปปี้ลิงก์ส่งให้แฟนได้เลย!</p>
+                    <p class="text-xs text-rose-500">แก้ไขเสร็จแล้วกดบันทึก หรือคัดลอกลิงก์ส่งให้แฟนได้เลยคั้บ</p>
                 </div>
-                <button onclick="closeEditModal()" class="w-8 h-8 rounded-full bg-white text-rose-500 hover:bg-rose-100 flex items-center justify-center font-bold">
+                <button id="close-edit-modal-btn" type="button" class="w-8 h-8 rounded-full bg-white text-rose-500 hover:bg-rose-100 flex items-center justify-center font-bold">
                     ✕
                 </button>
             </div>
 
-            <!-- Body Modal (Scrollable) -->
             <div class="p-5 overflow-y-auto space-y-4 text-sm font-prompt">
-                <!-- ชื่อเรียก -->
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-semibold text-rose-800 mb-1">ชื่อเรียกแฟน (ผู้รับ)</label>
-                        <input id="input-partner-name" type="text" class="w-full px-3.5 py-2 rounded-xl border border-rose-200 focus:outline-none focus:border-rose-400 bg-rose-50/30" placeholder="เช่น ที่รัก, เธอ, น้องบี">
+                        <input id="input-partner-name" type="text" class="w-full px-3.5 py-2 rounded-xl border border-rose-200 focus:outline-none focus:border-rose-400 bg-rose-50/30" placeholder="เช่น คนเก่งของเค้า">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-rose-800 mb-1">ชื่อเรียกตัวเรา (ผู้ส่ง)</label>
-                        <input id="input-sender-name" type="text" class="w-full px-3.5 py-2 rounded-xl border border-rose-200 focus:outline-none focus:border-rose-400 bg-rose-50/30" placeholder="เช่น เค้าเอง, พี่เอ">
+                        <input id="input-sender-name" type="text" class="w-full px-3.5 py-2 rounded-xl border border-rose-200 focus:outline-none focus:border-rose-400 bg-rose-50/30" placeholder="เช่น เค้าเอง">
                     </div>
                 </div>
 
-                <!-- การ์ดขอบคุณ 4 ใบ -->
                 <div>
-                    <label class="block text-xs font-semibold text-rose-800 mb-1.5">การ์ดขอบคุณ (แก้ข้อความหรือใส่ลิงก์รูปภาพได้)</label>
-                    <div id="edit-cards-container" class="space-y-3">
-                        <!-- สร้างฟอร์มการ์ดแต่ละใบด้วย JS -->
-                    </div>
+                    <label class="block text-xs font-semibold text-rose-800 mb-1.5">การ์ดขอบคุณ 4 ใบ (ใส่ลิงก์รูปคู่ได้คั้บ)</label>
+                    <div id="edit-cards-container" class="space-y-3"></div>
                 </div>
 
-                <!-- คำขอโทษ -->
                 <div>
                     <label class="block text-xs font-semibold text-rose-800 mb-1">หัวข้อคำขอโทษ</label>
                     <input id="input-apology-title" type="text" class="w-full px-3.5 py-2 rounded-xl border border-rose-200 focus:outline-none focus:border-rose-400 bg-rose-50/30">
@@ -557,38 +567,42 @@
                     <textarea id="input-apology-body" rows="3" class="w-full px-3.5 py-2 rounded-xl border border-rose-200 focus:outline-none focus:border-rose-400 bg-rose-50/30"></textarea>
                 </div>
 
-                <!-- จดหมายตอนจบ -->
                 <div>
                     <label class="block text-xs font-semibold text-rose-800 mb-1">จดหมายฉบับเต็ม (หลังกดยกโทษ)</label>
                     <textarea id="input-final-letter" rows="3" class="w-full px-3.5 py-2 rounded-xl border border-rose-200 focus:outline-none focus:border-rose-400 bg-rose-50/30"></textarea>
                 </div>
 
-                <!-- คำสัญญาใจในโหลแก้ว -->
                 <div>
-                    <label class="block text-xs font-semibold text-rose-800 mb-1">แคปซูลสัญญาใจในโหลแก้ว (คั่นแต่ละข้อด้วยการขึ้นบรรทัดใหม่)</label>
-                    <textarea id="input-promises" rows="4" class="w-full px-3.5 py-2 rounded-xl border border-rose-200 focus:outline-none focus:border-rose-400 bg-rose-50/30" placeholder="เช่น 🌟 สัญญาว่าจะใจเย็นขึ้นและฟังเธอให้มากขึ้น"></textarea>
+                    <label class="block text-xs font-semibold text-rose-800 mb-1">คำสัญญาใจ 4 ข้อ (คั่นแต่ละข้อด้วยการขึ้นบรรทัดใหม่)</label>
+                    <textarea id="input-promises" rows="4" class="w-full px-3.5 py-2 rounded-xl border border-rose-200 focus:outline-none focus:border-rose-400 bg-rose-50/30"></textarea>
                 </div>
 
-                <!-- กล่องแชร์ลิงก์พร้อมข้อมูล -->
+                <div class="bg-emerald-50/90 border border-emerald-200 rounded-2xl p-3.5 space-y-1.5">
+                    <label for="input-formspree-url" class="block text-xs font-bold text-emerald-900">
+                        📨 Formspree Endpoint URL (รับข้อความตอบกลับเข้าอีเมล)
+                    </label>
+                    <input id="input-formspree-url" type="url" class="w-full px-3 py-2 rounded-xl border border-emerald-200 focus:outline-none focus:border-emerald-400 bg-white text-xs text-rose-900" placeholder="https://formspree.io/f/xkjrywqv">
+                    <p class="text-[11px] text-emerald-800">เชื่อมต่อกับฟอร์มของคุณไว้เรียบร้อยแล้วคั้บ เวลาแฟนกดส่งข้อความจะเด้งเข้าอีเมลทันทีเลย</p>
+                </div>
+
                 <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3.5">
-                    <p class="text-xs font-bold text-amber-800 mb-1">💡 วิธีส่งให้แฟนพร้อมข้อความที่แก้ไขแล้ว:</p>
-                    <p class="text-xs text-amber-700 mb-2">กดปุ่ม "คัดลอกลิงก์สำหรับส่งให้แฟน" ด้านล่าง ระบบจะฝังข้อความทั้งหมดไว้ในลิงก์ให้เลย (หากเปิดบนโฮสต์จริง)</p>
-                    <button type="button" onclick="copyShareableLink()" class="w-full py-2 px-3 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5">
-                        <span>🔗</span> <span id="copy-link-text">คัดลอกลิงก์ที่ฝังข้อความแล้ว</span>
+                    <p class="text-xs font-bold text-amber-800 mb-1">💡 วิธีส่งลิงก์ให้แฟนพร้อมข้อความที่แก้ไขแล้ว:</p>
+                    <p class="text-xs text-amber-700 mb-2">กดปุ่มด้านล่างเพื่อคัดลอกลิงก์ที่ฝังข้อความทั้งหมดไว้ใน URL แล้วส่งให้แฟนได้เลยคั้บ</p>
+                    <button id="copy-share-link-btn" type="button" class="w-full py-2 px-3 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5">
+                        <span>🔗</span> <span id="copy-link-text">คัดลอกลิงก์ที่ฝังข้อความแล้วคั้บ</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Footer Modal -->
             <div class="px-5 py-3.5 bg-rose-50 border-t border-rose-100 flex items-center justify-between gap-2">
-                <button onclick="resetToDefault()" class="px-3.5 py-2.5 rounded-xl text-xs font-semibold text-rose-500 hover:bg-rose-100 transition">
+                <button id="reset-default-btn" type="button" class="px-3.5 py-2.5 rounded-xl text-xs font-semibold text-rose-500 hover:bg-rose-100 transition">
                     รีเซ็ตค่าเริ่มต้น
                 </button>
                 <div class="flex gap-2">
-                    <button onclick="closeEditModal()" class="px-4 py-2.5 rounded-xl bg-white border border-rose-200 text-rose-600 text-xs font-bold">
+                    <button id="cancel-edit-btn" type="button" class="px-4 py-2.5 rounded-xl bg-white border border-rose-200 text-rose-600 text-xs font-bold">
                         ยกเลิก
                     </button>
-                    <button onclick="saveCustomData()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-rose-500 to-pink-500 text-white text-xs font-bold shadow-md">
+                    <button id="save-custom-btn" type="button" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-rose-500 to-pink-500 text-white text-xs font-bold shadow-md">
                         บันทึก & ดูตัวอย่าง ✨
                     </button>
                 </div>
@@ -596,640 +610,988 @@
         </div>
     </div>
 
-    <!-- Toast Notification แจ้งเตือนน่ารักๆ (แทน alert) -->
-    <div id="toast-box" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 hidden bg-rose-900/90 text-white text-xs sm:text-sm font-semibold px-5 py-3 rounded-full shadow-xl transition-all">
-        บันทึกเรียบร้อยแล้ว! 💖
+    <!-- Toast Notification -->
+    <div id="toast-box" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 hidden bg-rose-900/95 text-white text-xs sm:text-sm font-semibold px-5 py-3 rounded-full shadow-xl transition-all text-center max-w-[90vw]">
+        บันทึกเรียบร้อยแล้วคั้บ! 💖
     </div>
 
     <script>
-        // ==========================================
-        // 1. DEFAULT DATA & STATE MANAGEMENT
-        // ==========================================
-        const defaultAppData = {
-            partnerName: "คนเก่งของเค้า",
-            senderName: "เค้าเอง",
-            cards: [
-                {
-                    emoji: "🫂",
-                    title: "ขอบคุณที่คอยอยู่ข้างๆ ในวันที่เหนื่อยนะคั้บ",
-                    text: "ไม่ว่าวันไหนจะเจอเรื่องหนักแค่ไหน แค่มีเธอคอยรับฟังและอยู่ข้างๆ เค้าก็รู้สึกว่าทุกอย่างผ่านไปได้เสมอเลยคั้บ",
-                    imageUrl: ""
-                },
-                {
-                    emoji: "☀️",
-                    title: "ขอบคุณรอยยิ้มที่ทำให้ทุกวันสดใสนะคั้บ",
-                    text: "รอยยิ้มและเสียงหัวเราะของเธอคือพลังบวกที่ดีที่สุดในแต่ละวันของเค้าเลยคั้บ ขอบคุณที่เข้ามาเป็นความสุขให้กันนะ",
-                    imageUrl: ""
-                },
-                {
-                    emoji: "🧸",
-                    title: "ขอบคุณที่เข้าใจและอดทนกับเค้าเสมอนะคั้บ",
-                    text: "เค้ารู้ตัวว่าบางทีก็ดื้อ งอแง หรือเอาแต่ใจ แต่เธอก็ยังใจเย็นและคอยอยู่ข้างๆ ไม่เคยทิ้งกันไปไหนเลยคั้บ",
-                    imageUrl: ""
-                },
-                {
-                    emoji: "🌈",
-                    title: "ขอบคุณทุกช่วงเวลาที่เราได้สร้างด้วยกันคั้บ",
-                    text: "ทุกที่ที่ไป ทุกมื้อที่กินด้วยกัน มันพิเศษขึ้นมากเพราะมีเธออยู่ตรงนั้น ขอบคุณที่เดินทางร่วมกันมานะคั้บ",
-                    imageUrl: ""
+        (function () {
+            "use strict";
+
+            // ==========================================
+            // 1. DEFAULT DATA & STATE
+            // ==========================================
+            const STORAGE_KEY = "loveSurpriseData_v2";
+            const DEFAULT_FORMSPREE_URL = "https://formspree.io/f/xkjrywqv";
+
+            const defaultAppData = {
+                partnerName: "คนเก่งของเค้า",
+                senderName: "เค้าเอง",
+                formspreeUrl: DEFAULT_FORMSPREE_URL,
+                cards: [
+                    {
+                        emoji: "🫂",
+                        title: "ขอบคุณที่คอยอยู่ข้างๆ ในวันที่เหนื่อยนะคั้บ",
+                        text: "ไม่ว่าวันไหนจะเจอเรื่องหนักแค่ไหน แค่มีเธอคอยรับฟังและอยู่ข้างๆ เค้าก็รู้สึกว่าทุกอย่างผ่านไปได้เสมอเลยคั้บ",
+                        imageUrl: ""
+                    },
+                    {
+                        emoji: "☀️",
+                        title: "ขอบคุณรอยยิ้มที่ทำให้ทุกวันสดใสนะคั้บ",
+                        text: "รอยยิ้มและเสียงหัวเราะของเธอคือพลังบวกที่ดีที่สุดในแต่ละวันของเค้าเลยคั้บ ขอบคุณที่เข้ามาเป็นความสุขให้กันนะ",
+                        imageUrl: ""
+                    },
+                    {
+                        emoji: "🧸",
+                        title: "ขอบคุณที่เข้าใจและอดทนกับเค้าเสมอนะคั้บ",
+                        text: "เค้ารู้ตัวว่าบางทีก็ดื้อ งอแง หรือเอาแต่ใจ แต่เธอก็ยังใจเย็นและคอยอยู่ข้างๆ ไม่เคยทิ้งกันไปไหนเลยคั้บ",
+                        imageUrl: ""
+                    },
+                    {
+                        emoji: "🌈",
+                        title: "ขอบคุณทุกช่วงเวลาที่เราได้สร้างด้วยกันคั้บ",
+                        text: "ทุกที่ที่ไป ทุกมื้อที่กินด้วยกัน มันพิเศษขึ้นมากเพราะมีเธออยู่ตรงนั้น ขอบคุณที่เดินทางร่วมกันมานะคั้บ",
+                        imageUrl: ""
+                    }
+                ],
+                apologyTitle: "เค้าขอโทษนะคั้บที่บางทีงี่เง่าและทำตัวไม่น่ารัก",
+                apologyBody: "เค้าไม่อยากเห็นเธอต้องเสียใจหรือเหนื่อยใจเพราะเค้าเลยคั้บ บางครั้งเค้าอาจจะพูดจาไม่ทันคิดหรือละเลยความรู้สึกของเธอไปบ้าง\n\nเค้าขอโทษจริงๆ นะคั้บ สัญญาว่าจะใจเย็นลง รับฟังเธอให้มากขึ้น และดูแลหัวใจของเธอให้ดีกว่าเดิมนะคั้บ 🥺",
+                finalLetter: "ขอบคุณที่ยังจับมือกันไว้และให้อภัยเค้านะคั้บ เธอคือความโชคดีที่สุดในชีวิตของเค้าเลยจริงๆ\n\nจากนี้ไปเราจะค่อยๆ เรียนรู้และเติบโตไปด้วยกัน สร้างความทรงจำดีๆ ด้วยกันไปอีกนานๆ เลยนะคั้บ รักเธอมากๆ คั้บผม ❤️",
+                promises: [
+                    { icon: "🌟", text: "สัญญาว่าจะใจเย็นขึ้นและฟังเธอให้มากขึ้นคั้บ", opened: false },
+                    { icon: "🫂", text: "สัญญาว่าจะอยู่ข้างๆ ไม่ว่าวันไหนจะเหนื่อยแค่ไหนคั้บ", opened: false },
+                    { icon: "🍰", text: "สัญญาว่าจะพาไปกินของอร่อยเวลาเธออารมณ์ไม่ดีคั้บ", opened: false },
+                    { icon: "💖", text: "สัญญาว่าจะรักและใส่ใจเธอมากขึ้นในทุกๆ วันคั้บผม", opened: false }
+                ]
+            };
+
+            const pleadingMessages = [
+                "งื้อออ อย่าเพิ่งงอนเลยนะคั้บ เค้ารู้ผิดแล้วจริงๆ 🥺🙏",
+                "ดีกันนะคั้บคนดี เดี๋ยวเค้าพาไปกินของอร่อยเลยน้า 🍰✨",
+                "ถ้าไม่ยกโทษให้ เค้าจะร้องไห้แล้วนะคั้บ แงๆๆ 😭💔",
+                "ปุ่มนั้นกดไม่ได้หรอกคั้บ กดปุ่มสีเขียวข้างๆ ดีกว่านะ น้าาา 💚🥺",
+                "ยอมแล้วคั้บผม ยกโทษให้เค้าเถอะนะคนเก่งของเค้า 🧸💕"
+            ];
+
+            let appData = JSON.parse(JSON.stringify(defaultAppData));
+            let currentCardIndex = 0;
+            let sulkingCount = 0;
+            let loveMeterValue = 50;
+            let hugCount = 0;
+            let allPromisesCelebrated = false;
+
+            // ==========================================
+            // 2. WEB AUDIO API ROMANTIC MUSIC BOX
+            // ==========================================
+            let audioCtx = null;
+            let musicPlaying = false;
+            let melodyTimer = null;
+            let melodyStep = 0;
+
+            const romanticChords = [
+                [261.63, 329.63, 392.00, 493.88], // Cmaj7
+                [220.00, 261.63, 329.63, 392.00], // Am7
+                [174.61, 220.00, 261.63, 329.63], // Fmaj7
+                [196.00, 246.94, 293.66, 349.23]  // G7
+            ];
+
+            function ensureAudioContext() {
+                if (!audioCtx) {
+                    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                    if (AudioContextClass) {
+                        audioCtx = new AudioContextClass();
+                    }
                 }
-            ],
-            apologyTitle: "เค้าขอโทษนะคั้บที่บางทีงี่เง่าและทำตัวไม่น่ารัก",
-            apologyBody: "เค้าไม่อยากเห็นเธอต้องเสียใจหรือเหนื่อยใจเพราะเค้าเลยคั้บ บางครั้งเค้าอาจจะพูดจาไม่ทันคิดหรือละเลยความรู้สึกของเธอไปบ้าง\n\nเค้าขอโทษจริงๆ นะคั้บ สัญญาว่าจะใจเย็นลง รับฟังเธอให้มากขึ้น และดูแลหัวใจของเธอให้ดีกว่าเดิมนะคั้บ 🥺",
-            finalLetter: "ขอบคุณที่ยังจับมือกันไว้และให้อภัยเค้านะคั้บ เธอคือความโชคดีที่สุดในชีวิตของเค้าเลยจริงๆ\n\nจากนี้ไปเราจะค่อยๆ เรียนรู้และเติบโตไปด้วยกัน สร้างความทรงจำดีๆ ด้วยกันไปอีกนานๆ เลยนะคั้บ รักเธอมากๆ คั้บผม ❤️",
-            promises: [
-                { icon: "🌟", text: "สัญญาว่าจะใจเย็นขึ้นและฟังเธอให้มากขึ้นคั้บ", opened: false },
-                { icon: "🫂", text: "สัญญาว่าจะอยู่ข้างๆ ไม่ว่าวันไหนจะเหนื่อยแค่ไหนคั้บ", opened: false },
-                { icon: "🍰", text: "สัญญาว่าจะพาไปกินของอร่อยเวลาเธออารมณ์ไม่ดีคั้บ", opened: false },
-                { icon: "💖", text: "สัญญาว่าจะรักและใส่ใจเธอมากขึ้นในทุกๆ วันคั้บผม", opened: false }
-            ]
-        };
+                if (audioCtx && audioCtx.state === "suspended") {
+                    audioCtx.resume().catch(function () {});
+                }
+            }
 
-        let appData = JSON.parse(JSON.stringify(defaultAppData));
-        let currentCardIndex = 0;
-        let sulkingCount = 0;
-        let loveMeterValue = 50;
-        let hugCount = 0;
-        let soundEnabled = false;
-        let synth = null;
+            function playNote(freq, duration, volume) {
+                if (!musicPlaying) return;
+                ensureAudioContext();
+                if (!audioCtx) return;
 
-        // ข้อความอ้อนเวลาคนกดปุ่ม "ยังงอนอยู่"
-        const pleadingMessages = [
-            "งื้อออ อย่าเพิ่งงอนเลยนะคั้บ เค้ารู้ผิดแล้วจริงๆ 🥺🙏",
-            "ดีกันนะคั้บคนดี เดี๋ยวเค้าพาไปกินของอร่อยเลยน้า 🍰✨",
-            "ถ้าไม่ยกโทษให้ เค้าจะร้องไห้แล้วนะคั้บ แงๆๆ 😭💔",
-            "ปุ่มนั้นกดไม่ได้หรอกคั้บ กดปุ่มสีเขียวข้างๆ ดีกว่านะ น้าาา 💚🥺",
-            "ยอมแล้วคั้บผม ยกโทษให้เค้าเถอะนะคนเก่งของเค้า 🧸💕"
-        ];
+                try {
+                    const now = audioCtx.currentTime;
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
 
-        // ==========================================
-        // 2. INITIALIZATION & URL / STORAGE LOADING
-        // ==========================================
-        window.onload = function () {
-            loadSavedData();
-            renderAllData();
-            startFloatingHearts();
-        };
+                    osc.type = "sine";
+                    osc.frequency.setValueAtTime(freq, now);
 
-        function loadSavedData() {
-            try {
-                // ตรวจสอบก่อนว่ามีข้อมูลฝังมากับ URL Hash หรือไม่ (สำหรับลิงก์ที่แชร์ให้แฟน)
-                const hash = window.location.hash;
-                if (hash && hash.startsWith("#gift=")) {
-                    const encoded = hash.replace("#gift=", "");
-                    const decodedJson = decodeURIComponent(escape(atob(encoded)));
-                    const parsed = JSON.parse(decodedJson);
-                    appData = { ...defaultAppData, ...parsed };
+                    gain.gain.setValueAtTime(0.0001, now);
+                    gain.gain.exponentialRampToValueAtTime(volume || 0.045, now + 0.04);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + (duration || 1.2));
+
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+
+                    osc.start(now);
+                    osc.stop(now + (duration || 1.2) + 0.05);
+                } catch (e) {
+                    // Ignore audio errors safely
+                }
+            }
+
+            function playChime(freqs) {
+                if (!musicPlaying) return;
+                freqs.forEach(function (f, idx) {
+                    setTimeout(function () {
+                        playNote(f, 0.7, 0.05);
+                    }, idx * 80);
+                });
+            }
+
+            function startMusicLoop() {
+                if (melodyTimer) clearInterval(melodyTimer);
+                const playBar = function () {
+                    if (!musicPlaying) return;
+                    const chord = romanticChords[melodyStep % romanticChords.length];
+                    chord.forEach(function (freq, i) {
+                        setTimeout(function () {
+                            playNote(freq, 1.5, 0.032);
+                        }, i * 260);
+                    });
+                    melodyStep++;
+                };
+                playBar();
+                melodyTimer = setInterval(playBar, 2200);
+            }
+
+            function stopMusicLoop() {
+                if (melodyTimer) {
+                    clearInterval(melodyTimer);
+                    melodyTimer = null;
+                }
+            }
+
+            function toggleSound() {
+                musicPlaying = !musicPlaying;
+                const iconEl = document.getElementById("sound-icon");
+                const textEl = document.getElementById("sound-text");
+
+                if (musicPlaying) {
+                    ensureAudioContext();
+                    startMusicLoop();
+                    if (iconEl) iconEl.textContent = "🎵";
+                    if (textEl) textEl.textContent = "กำลังเล่นเพลงคั้บ";
+                    showToast("เปิดเพลงคลอเบาๆ แล้วนะคั้บ 🎶");
+                } else {
+                    stopMusicLoop();
+                    if (iconEl) iconEl.textContent = "🔇";
+                    if (textEl) textEl.textContent = "เปิดเพลงคลอเบาๆ คั้บ";
+                }
+            }
+
+            // ==========================================
+            // 3. FLOATING BACKGROUND HEARTS & CONFETTI
+            // ==========================================
+            function spawnBgHeart() {
+                const container = document.getElementById("floating-hearts-container");
+                if (!container) return;
+
+                const symbols = ["💖", "💕", "🌷", "✨", "🩷", "🧸"];
+                const el = document.createElement("div");
+                el.className = "floating-bg-heart";
+                el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                el.style.left = Math.random() * 96 + "vw";
+                el.style.fontSize = (14 + Math.random() * 14) + "px";
+                const duration = 7 + Math.random() * 6;
+                el.style.animationDuration = duration + "s";
+
+                container.appendChild(el);
+                setTimeout(function () {
+                    if (el && el.parentNode) {
+                        el.parentNode.removeChild(el);
+                    }
+                }, duration * 1000 + 200);
+            }
+
+            function launchHeartConfetti() {
+                if (typeof window.confetti === "function") {
+                    try {
+                        window.confetti({
+                            particleCount: 75,
+                            spread: 70,
+                            origin: { y: 0.65 },
+                            colors: ["#fb7185", "#f43f5e", "#f59e0b", "#34d399", "#f472b6"]
+                        });
+                    } catch (e) {
+                        // Safe fallback
+                    }
+                }
+            }
+
+            // ==========================================
+            // 4. NAVIGATION & STAGE TRANSITIONS
+            // ==========================================
+            function showStep(stepNumber) {
+                [1, 2, 3, 4].forEach(function (num) {
+                    const sec = document.getElementById("step-" + num);
+                    if (sec) {
+                        if (num === stepNumber) {
+                            sec.classList.remove("hidden");
+                            sec.classList.remove("section-fade");
+                            void sec.offsetWidth; // trigger reflow
+                            sec.classList.add("section-fade");
+                        } else {
+                            sec.classList.add("hidden");
+                        }
+                    }
+                });
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+
+            // Stage 1: Open Envelope
+            function openEnvelope() {
+                const wrapper = document.getElementById("envelope-wrapper");
+                if (!wrapper) {
+                    showStep(2);
+                    return;
+                }
+                if (wrapper.dataset.opening === "true") return;
+                wrapper.dataset.opening = "true";
+
+                wrapper.classList.remove("animate-wiggle");
+                wrapper.classList.add("envelope-open");
+                playChime([523.25, 659.25, 783.99]);
+
+                setTimeout(function () {
+                    wrapper.dataset.opening = "false";
+                    currentCardIndex = 0;
+                    renderThankYouCard();
+                    showStep(2);
+                }, 950);
+            }
+
+            // ==========================================
+            // 5. STAGE 2: THANK YOU CARDS CAROUSEL
+            // ==========================================
+            function renderThankYouCard() {
+                const cards = appData.cards || defaultAppData.cards;
+                const total = cards.length;
+                if (currentCardIndex < 0) currentCardIndex = 0;
+                if (currentCardIndex >= total) currentCardIndex = total - 1;
+
+                const card = cards[currentCardIndex];
+                const counterEl = document.getElementById("card-counter");
+                const totalEl = document.getElementById("card-total");
+                const contentEl = document.getElementById("card-content");
+                const dotsEl = document.getElementById("card-dots");
+                const prevBtn = document.getElementById("prev-card-btn");
+                const nextBtn = document.getElementById("next-card-btn");
+
+                if (counterEl) counterEl.textContent = String(currentCardIndex + 1);
+                if (totalEl) totalEl.textContent = String(total);
+
+                if (contentEl) {
+                    const hasImg = card.imageUrl && card.imageUrl.trim() !== "";
+                    const visualHtml = hasImg
+                        ? `<div class="w-36 h-36 sm:w-40 sm:h-40 rounded-2xl overflow-hidden border-4 border-rose-200 shadow-md mb-4 mx-auto bg-rose-50">
+                               <img src="${escapeHtml(card.imageUrl)}" alt="ความทรงจำของเรา" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/300x300/ffe4e6/e11d48?text=%F0%9F%92%96';">
+                           </div>`
+                        : `<div class="w-24 h-24 rounded-full bg-gradient-to-br from-rose-100 to-amber-100 border-2 border-rose-200 flex items-center justify-center text-5xl mb-4 shadow-xs animate-float">
+                               ${escapeHtml(card.emoji || "💖")}
+                           </div>`;
+
+                    contentEl.innerHTML = `
+                        ${visualHtml}
+                        <h3 class="text-lg sm:text-xl font-bold text-rose-900 mb-2.5 leading-snug">
+                            ${escapeHtml(card.title)}
+                        </h3>
+                        <p class="text-rose-700/90 text-sm sm:text-base leading-relaxed">
+                            ${escapeHtml(card.text)}
+                        </p>
+                    `;
+                }
+
+                if (dotsEl) {
+                    dotsEl.innerHTML = cards.map(function (_, idx) {
+                        const activeClass = idx === currentCardIndex
+                            ? "w-6 bg-rose-500"
+                            : "w-2 bg-rose-200 hover:bg-rose-300";
+                        return `<span class="h-2 rounded-full transition-all duration-300 ${activeClass}"></span>`;
+                    }).join("");
+                }
+
+                if (prevBtn) {
+                    prevBtn.disabled = currentCardIndex === 0;
+                }
+
+                if (nextBtn) {
+                    if (currentCardIndex === total - 1) {
+                        nextBtn.textContent = "อ่านเรื่องต่อไปคั้บ 🥺💌";
+                    } else {
+                        nextBtn.textContent = "ใบถัดไปคั้บ 💕";
+                    }
+                }
+            }
+
+            function nextThankYouCard() {
+                const total = (appData.cards || defaultAppData.cards).length;
+                playChime([587.33, 783.99]);
+                if (currentCardIndex < total - 1) {
+                    currentCardIndex++;
+                    renderThankYouCard();
+                } else {
+                    resetApologyStage();
+                    showStep(3);
+                }
+            }
+
+            function prevThankYouCard() {
+                if (currentCardIndex > 0) {
+                    playChime([523.25, 440]);
+                    currentCardIndex--;
+                    renderThankYouCard();
+                }
+            }
+
+            // ==========================================
+            // 6. STAGE 3: APOLOGY & RUNAWAY BUTTON
+            // ==========================================
+            function resetApologyStage() {
+                sulkingCount = 0;
+                const forgiveBtn = document.getElementById("forgive-btn");
+                const sulkingBtn = document.getElementById("sulking-btn");
+                const bubble = document.getElementById("pleading-bubble");
+
+                if (forgiveBtn) {
+                    forgiveBtn.style.transform = "scale(1)";
+                }
+                if (sulkingBtn) {
+                    sulkingBtn.style.position = "relative";
+                    sulkingBtn.style.left = "auto";
+                    sulkingBtn.style.top = "auto";
+                    sulkingBtn.style.transform = "scale(1)";
+                    sulkingBtn.textContent = "ยังงอนอยู่ 😤";
+                }
+                if (bubble) {
+                    bubble.classList.add("hidden");
+                }
+            }
+
+            function handleSulkingClick(e) {
+                if (e) e.preventDefault();
+                sulkingCount++;
+                playChime([440, 392]);
+
+                const forgiveBtn = document.getElementById("forgive-btn");
+                const sulkingBtn = document.getElementById("sulking-btn");
+                const bubble = document.getElementById("pleading-bubble");
+                const area = document.getElementById("apology-buttons-area");
+
+                // Show pleading bubble
+                if (bubble) {
+                    bubble.classList.remove("hidden");
+                    const msgIdx = (sulkingCount - 1) % pleadingMessages.length;
+                    bubble.textContent = pleadingMessages[msgIdx];
+                }
+
+                // Grow Forgive button
+                if (forgiveBtn) {
+                    const growScale = Math.min(1 + sulkingCount * 0.14, 1.75);
+                    forgiveBtn.style.transform = `scale(${growScale})`;
+                }
+
+                // Shrink and jump Runaway button safely inside buttons area
+                if (sulkingBtn && area) {
+                    const shrinkScale = Math.max(1 - sulkingCount * 0.08, 0.62);
+                    const areaRect = area.getBoundingClientRect();
+                    const btnWidth = sulkingBtn.offsetWidth || 120;
+                    const btnHeight = sulkingBtn.offsetHeight || 44;
+
+                    const maxX = Math.max(10, areaRect.width - btnWidth - 10);
+                    const maxY = Math.max(10, areaRect.height - btnHeight - 10);
+
+                    const randX = Math.floor(Math.random() * maxX);
+                    const randY = Math.floor(Math.random() * maxY);
+
+                    sulkingBtn.style.position = "absolute";
+                    sulkingBtn.style.left = randX + "px";
+                    sulkingBtn.style.top = randY + "px";
+                    sulkingBtn.style.transform = `scale(${shrinkScale})`;
+
+                    const shortLabels = ["จับไม่ได้หรอกคั้บ 😜", "ยังงอนอยู่อีกหรอ 🥺", "กดปุ่มเขียวเถอะคั้บ 💚", "แงๆ ยอมแล้วคั้บ 🙏"];
+                    sulkingBtn.textContent = shortLabels[(sulkingCount - 1) % shortLabels.length];
+                }
+            }
+
+            function forgiveMe() {
+                playChime([523.25, 659.25, 783.99, 1046.5]);
+                launchHeartConfetti();
+                allPromisesCelebrated = false;
+                renderPromises();
+                showStep(4);
+            }
+
+            // ==========================================
+            // 7. STAGE 4: PROMISES JAR, HUG & WRITE BACK
+            // ==========================================
+            function renderPromises() {
+                const listEl = document.getElementById("promises-list");
+                const openedEl = document.getElementById("promises-opened-count");
+                const totalEl = document.getElementById("promises-total-count");
+                const promises = appData.promises || defaultAppData.promises;
+
+                const openedCount = promises.filter(function (p) { return p.opened; }).length;
+                if (openedEl) openedEl.textContent = String(openedCount);
+                if (totalEl) totalEl.textContent = String(promises.length);
+
+                if (listEl) {
+                    listEl.innerHTML = promises.map(function (item, idx) {
+                        if (item.opened) {
+                            return `
+                                <div class="promise-opened bg-white/95 border-2 border-amber-300 rounded-2xl p-3.5 text-left shadow-xs flex items-start gap-2.5">
+                                    <span class="text-xl shrink-0 mt-0.5">${escapeHtml(item.icon || "🌟")}</span>
+                                    <p class="text-xs sm:text-sm font-semibold text-rose-900 leading-relaxed">${escapeHtml(item.text)}</p>
+                                </div>
+                            `;
+                        } else {
+                            return `
+                                <button type="button" data-promise-idx="${idx}" class="promise-capsule-btn bg-gradient-to-br from-rose-100 to-amber-100 hover:from-rose-200 hover:to-amber-200 border-2 border-dashed border-rose-300 rounded-2xl p-4 text-center transition transform active:scale-95 flex flex-col items-center justify-center gap-1 min-h-[82px]">
+                                    <span class="text-2xl animate-pulse">💖</span>
+                                    <span class="text-xs font-bold text-rose-700">แตะเปิดคำสัญญาข้อที่ ${idx + 1} คั้บ</span>
+                                </button>
+                            `;
+                        }
+                    }).join("");
+
+                    listEl.querySelectorAll(".promise-capsule-btn").forEach(function (btn) {
+                        btn.addEventListener("click", function () {
+                            const idx = parseInt(btn.getAttribute("data-promise-idx"), 10);
+                            openPromiseCapsule(idx);
+                        });
+                    });
+                }
+            }
+
+            function openPromiseCapsule(idx) {
+                const promises = appData.promises || defaultAppData.promises;
+                if (!promises[idx] || promises[idx].opened) return;
+
+                promises[idx].opened = true;
+                playChime([659.25, 880]);
+                renderPromises();
+
+                const allOpened = promises.every(function (p) { return p.opened; });
+                if (allOpened && !allPromisesCelebrated) {
+                    allPromisesCelebrated = true;
+                    launchHeartConfetti();
+                    showToast("เปิดครบทุกคำสัญญาแล้วคั้บ เค้าจะทำให้ได้ทุกข้อเลยคั้บผม! 💖");
+                }
+            }
+
+            function sendVirtualHug() {
+                hugCount++;
+                playChime([523.25, 659.25, 783.99]);
+
+                const bearWrapper = document.getElementById("hug-bear-wrapper");
+                const cheekL = document.getElementById("bear-cheek-left");
+                const cheekR = document.getElementById("bear-cheek-right");
+                const barEl = document.getElementById("love-meter-bar");
+                const percentEl = document.getElementById("love-meter-percent");
+                const feedbackEl = document.getElementById("hug-feedback-text");
+
+                if (bearWrapper) {
+                    bearWrapper.classList.remove("animate-hug");
+                    void bearWrapper.offsetWidth;
+                    bearWrapper.classList.add("animate-hug");
+                }
+
+                if (cheekL) cheekL.setAttribute("opacity", "0.95");
+                if (cheekR) cheekR.setAttribute("opacity", "0.95");
+
+                // Spawn burst of floating hearts
+                for (let i = 0; i < 6; i++) {
+                    setTimeout(spawnBgHeart, i * 90);
+                }
+
+                if (loveMeterValue < 100) {
+                    loveMeterValue = Math.min(100, loveMeterValue + 10);
+                }
+
+                if (barEl) barEl.style.width = loveMeterValue + "%";
+                if (percentEl) percentEl.textContent = loveMeterValue + "%";
+
+                if (feedbackEl) {
+                    if (loveMeterValue < 100) {
+                        feedbackEl.textContent = `ได้รับกอดอุ่นๆ แล้วคั้บ! (${hugCount} กอด) กดส่งกอดอีกนิดให้เต็ม 100% นะคั้บ 🫂`;
+                    } else {
+                        feedbackEl.textContent = `เย้! หลอดความรักเต็ม 100% แล้วคั้บผม ขอบคุณสำหรับกอดแน่นๆ นะคั้บ 🥰💖`;
+                        if (hugCount === 5) {
+                            launchHeartConfetti();
+                        }
+                    }
+                }
+            }
+
+            // Write Back to Me (Formspree)
+            function selectMoodTag(btnEl) {
+                const moodText = btnEl.getAttribute("data-mood") || "หายงอนแล้ว 💚";
+                playChime([659.25, 783.99]);
+
+                const hiddenInput = document.getElementById("selected-mood-input");
+                if (hiddenInput) hiddenInput.value = moodText;
+
+                document.querySelectorAll(".mood-tag-btn").forEach(function (btn) {
+                    btn.className = "mood-tag-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/85 text-rose-700 border border-rose-200 hover:bg-rose-50 transition active:scale-95";
+                });
+
+                btnEl.className = "mood-tag-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border-2 border-emerald-400 shadow-xs transition active:scale-95";
+            }
+
+            async function submitReplyToFormspree(event) {
+                event.preventDefault();
+
+                const hiddenMood = document.getElementById("selected-mood-input");
+                const mood = hiddenMood ? hiddenMood.value : "หายงอนแล้ว 💚";
+                const messageInput = document.getElementById("reply-message-input");
+                const messageText = messageInput ? messageInput.value.trim() : "";
+                const statusBox = document.getElementById("reply-status-box");
+                const submitBtn = document.getElementById("submit-reply-btn");
+                const submitIcon = document.getElementById("submit-reply-icon");
+                const submitText = document.getElementById("submit-reply-text");
+
+                if (!messageText) {
+                    showToast("พิมพ์ข้อความบอกเค้าก่อนนะคั้บ 🥺");
                     return;
                 }
 
-                // ถ้าไม่มีใน URL ให้ดึงจาก localStorage
-                const saved = localStorage.getItem("loveSurpriseData_v1");
-                if (saved) {
-                    appData = { ...defaultAppData, ...JSON.parse(saved) };
+                const endpoint = (appData.formspreeUrl || DEFAULT_FORMSPREE_URL).trim();
+
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.classList.add("opacity-75", "cursor-not-allowed");
                 }
-            } catch (e) {
-                console.warn("ไม่สามารถโหลดข้อมูลที่บันทึกไว้ได้ ใช้ค่าเริ่มต้นแทน", e);
-            }
-        }
+                if (submitIcon) submitIcon.textContent = "⏳";
+                if (submitText) submitText.textContent = "กำลังส่งข้อความไปหาเค้าคั้บ...";
+                if (statusBox) statusBox.classList.add("hidden");
 
-        function saveToStorage() {
-            try {
-                localStorage.setItem("loveSurpriseData_v1", JSON.stringify(appData));
-            } catch (e) {
-                console.warn("Storage error:", e);
-            }
-        }
+                const formattedSummary = `ความรู้สึก: ${mood}\nข้อความถึง ${appData.senderName}: ${messageText}`;
 
-        // ==========================================
-        // 3. SOUND EFFECTS (Tone.js)
-        // ==========================================
-        async function toggleSound() {
-            try {
-                if (!soundEnabled) {
-                    await Tone.start();
-                    synth = new Tone.PolySynth(Tone.Synth, {
-                        oscillator: { type: "sine" },
-                        envelope: { attack: 0.02, decay: 0.2, sustain: 0.1, release: 0.8 }
-                    }).toDestination();
-                    synth.volume.value = -10;
-                    soundEnabled = true;
-                    document.getElementById("sound-icon").textContent = "🔊";
-                    document.getElementById("sound-text").textContent = "เปิดเสียงอยู่";
-                    playChime([523.25, 659.25, 783.99]); // C5, E5, G5
-                } else {
-                    soundEnabled = false;
-                    document.getElementById("sound-icon").textContent = "🔇";
-                    document.getElementById("sound-text").textContent = "เปิดเสียงน่ารักๆ";
-                }
-            } catch (e) {
-                console.warn("Audio init skipped:", e);
-            }
-        }
+                try {
+                    const response = await fetch(endpoint, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Accept": "application/json"
+                        },
+                        body: JSON.stringify({
+                            to: appData.senderName,
+                            from: appData.partnerName,
+                            mood: mood,
+                            message: messageText,
+                            _subject: `💌 ข้อความตอบกลับจาก ${appData.partnerName} (${mood})`
+                        })
+                    });
 
-        function playChime(notes = [587.33, 880]) {
-            if (!soundEnabled || !synth) return;
-            try {
-                const now = Tone.now();
-                notes.forEach((note, idx) => {
-                    synth.triggerAttackRelease(note, "16n", now + idx * 0.09);
-                });
-            } catch (e) {}
-        }
+                    if (response.ok) {
+                        playChime([523.25, 659.25, 783.99, 1046.5]);
+                        launchHeartConfetti();
+                        if (messageInput) messageInput.value = "";
 
-        // ==========================================
-        // 4. FLOATING BACKGROUND HEARTS
-        // ==========================================
-        function startFloatingHearts() {
-            const container = document.getElementById("floating-hearts-container");
-            const icons = ["💖", "🌸", "💕", "✨", "🌷", "🤍"];
+                        if (statusBox) {
+                            statusBox.classList.remove("hidden");
+                            statusBox.className = "rounded-2xl p-4 text-xs sm:text-sm leading-relaxed space-y-2.5 bg-emerald-50 border-2 border-emerald-300 text-emerald-900";
+                            statusBox.innerHTML = `
+                                <div class="font-bold text-emerald-700 text-sm sm:text-base flex items-center justify-center gap-1.5">
+                                    <span>✅</span>
+                                    <span>ส่งข้อความถึง ${escapeHtml(appData.senderName)} เรียบร้อยแล้วคั้บ!</span>
+                                </div>
+                                <div class="bg-white/90 rounded-xl p-3 border border-emerald-200 text-left text-xs space-y-1">
+                                    <p><span class="font-bold text-emerald-800">สติกเกอร์ที่เลือก:</span> ${escapeHtml(mood)}</p>
+                                    <p><span class="font-bold text-emerald-800">ข้อความที่ส่ง:</span> "${escapeHtml(messageText)}"</p>
+                                </div>
+                                <button type="button" id="copy-reply-fallback-btn" class="w-full py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition">
+                                    📋 คัดลอกข้อความส่งซ้ำใน LINE ด้วยก็ได้คั้บ
+                                </button>
+                            `;
 
-            setInterval(() => {
-                const heart = document.createElement("div");
-                heart.className = "floating-bg-heart";
-                heart.textContent = icons[Math.floor(Math.random() * icons.length)];
-                heart.style.left = Math.random() * 100 + "vw";
-                heart.style.fontSize = (14 + Math.random() * 16) + "px";
-                const duration = 7 + Math.random() * 6;
-                heart.style.animationDuration = duration + "s";
-
-                container.appendChild(heart);
-                setTimeout(() => {
-                    heart.remove();
-                }, duration * 1000);
-            }, 900);
-        }
-
-        // ==========================================
-        // 5. NAVIGATION & INTERACTIVE FLOW
-        // ==========================================
-        function showStep(stepNumber) {
-            for (let i = 1; i <= 4; i++) {
-                const el = document.getElementById(`step-${i}`);
-                if (i === stepNumber) {
-                    el.classList.remove("hidden");
-                    el.classList.remove("section-fade");
-                    void el.offsetWidth; // trigger reflow
-                    el.classList.add("section-fade");
-                } else {
-                    el.classList.add("hidden");
-                }
-            }
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        }
-
-        // Step 1 -> Step 2: เปิดซองจดหมาย
-        function openEnvelope() {
-            const wrapper = document.getElementById("envelope-wrapper");
-            if (wrapper.classList.contains("envelope-open")) return;
-
-            wrapper.classList.add("envelope-open");
-            wrapper.classList.remove("animate-wiggle");
-            playChime([523.25, 659.25, 783.99, 1046.5]);
-
-            setTimeout(() => {
-                currentCardIndex = 0;
-                renderThankYouCard();
-                showStep(2);
-            }, 1150);
-        }
-
-        // Step 2: การ์ดขอบคุณ
-        function renderThankYouCard() {
-            const cards = appData.cards;
-            const card = cards[currentCardIndex];
-            const contentEl = document.getElementById("card-content");
-            const dotsEl = document.getElementById("card-dots");
-
-            document.getElementById("card-counter").textContent = currentCardIndex + 1;
-            document.getElementById("card-total").textContent = cards.length;
-
-            // สร้าง HTML ของการ์ด (รองรับรูปภาพหากผู้ใช้ใส่ URL มา)
-            let imageHtml = "";
-            if (card.imageUrl && card.imageUrl.trim() !== "") {
-                imageHtml = `
-                    <div class="w-36 h-36 sm:w-40 sm:h-40 rounded-2xl overflow-hidden shadow-md border-4 border-white mb-4 mx-auto">
-                        <img src="${escapeHtml(card.imageUrl)}" alt="ความทรงจำของเรา" class="w-full h-full object-cover" onerror="this.parentElement.style.display='none'">
-                    </div>
-                `;
-            }
-
-            contentEl.innerHTML = `
-                ${imageHtml ? imageHtml : `<div class="text-5xl sm:text-6xl mb-4 animate-bounce">${escapeHtml(card.emoji || "💖")}</div>`}
-                <h3 class="text-lg sm:text-xl font-bold text-rose-900 mb-3 leading-snug">
-                    ${escapeHtml(card.title)}
-                </h3>
-                <p class="text-rose-700/90 text-sm sm:text-base leading-relaxed">
-                    ${escapeHtml(card.text)}
-                </p>
-            `;
-
-            // อัปเดตจุดไข่ปลาด้านล่างการ์ด
-            dotsEl.innerHTML = cards.map((_, idx) => `
-                <span class="h-2 rounded-full transition-all duration-300 ${idx === currentCardIndex ? 'w-6 bg-rose-500' : 'w-2 bg-rose-200'}"></span>
-            `).join("");
-
-            // อัปเดตปุ่ม
-            document.getElementById("prev-card-btn").disabled = currentCardIndex === 0;
-            const nextBtn = document.getElementById("next-card-btn");
-            if (currentCardIndex === cards.length - 1) {
-                nextBtn.innerHTML = "มีอีกเรื่องอยากบอกคั้บ... 🥺 →";
-                nextBtn.className = "flex-1 py-3.5 px-6 rounded-2xl bg-gradient-to-r from-pink-500 to-rose-600 text-white font-bold text-sm sm:text-base shadow-md shadow-rose-300 transition active:scale-95";
-            } else {
-                nextBtn.innerHTML = "ใบถัดไปคั้บ 💕";
-                nextBtn.className = "flex-1 py-3.5 px-6 rounded-2xl bg-gradient-to-r from-rose-400 to-pink-500 text-white font-bold text-sm sm:text-base shadow-md shadow-rose-200 transition active:scale-95";
-            }
-        }
-
-        function nextThankYouCard() {
-            playChime([659.25, 783.99]);
-            if (currentCardIndex < appData.cards.length - 1) {
-                currentCardIndex++;
-                renderThankYouCard();
-            } else {
-                // ไปหน้าคำขอโทษ
-                resetApologyButtons();
-                showStep(3);
-            }
-        }
-
-        function prevThankYouCard() {
-            if (currentCardIndex > 0) {
-                playChime([587.33, 523.25]);
-                currentCardIndex--;
-                renderThankYouCard();
-            }
-        }
-
-        // Step 3: ลูกเล่นปุ่ม "ยังงอนอยู่" หนี & หดตัว
-        function resetApologyButtons() {
-            sulkingCount = 0;
-            const forgiveBtn = document.getElementById("forgive-btn");
-            const sulkingBtn = document.getElementById("sulking-btn");
-            const bubble = document.getElementById("pleading-bubble");
-
-            forgiveBtn.style.transform = "scale(1)";
-            sulkingBtn.style.transform = "translate(0px, 0px) scale(1)";
-            sulkingBtn.style.opacity = "1";
-            sulkingBtn.classList.remove("hidden");
-            sulkingBtn.textContent = "ยังงอนอยู่ 😤";
-            bubble.classList.add("hidden");
-        }
-
-        function handleSulkingClick() {
-            sulkingCount++;
-            playChime([440, 392]);
-
-            const forgiveBtn = document.getElementById("forgive-btn");
-            const sulkingBtn = document.getElementById("sulking-btn");
-            const bubble = document.getElementById("pleading-bubble");
-
-            // แสดงข้อความอ้อน
-            bubble.classList.remove("hidden");
-            const msgIndex = (sulkingCount - 1) % pleadingMessages.length;
-            bubble.textContent = pleadingMessages[msgIndex];
-
-            // ขยายปุ่ม "ยกโทษให้เค้านะ" ให้ใหญ่ขึ้นเรื่อยๆ
-            const forgiveScale = Math.min(1 + sulkingCount * 0.14, 1.65);
-            forgiveBtn.style.transform = `scale(${forgiveScale})`;
-
-            // ย้ายตำแหน่งปุ่ม "ยังงอนอยู่" แบบสุ่มในกรอบที่ปลอดภัย และค่อยๆ เล็กลง
-            if (sulkingCount >= 6) {
-                sulkingBtn.textContent = "ยอมยกโทษก็ได้คั้บ 💖";
-                sulkingBtn.onclick = forgiveMe;
-                sulkingBtn.style.transform = "translate(0px, 0px) scale(1)";
-                sulkingBtn.className = "z-10 bg-pink-400 text-white font-bold text-sm px-5 py-3 rounded-full shadow-md transition-all";
-            } else {
-                const randomX = (Math.random() - 0.5) * 140;
-                const randomY = (Math.random() - 0.5) * 60;
-                const shrinkScale = Math.max(1 - sulkingCount * 0.1, 0.55);
-                sulkingBtn.style.transform = `translate(${randomX}px, ${randomY}px) scale(${shrinkScale})`;
-            }
-        }
-
-        // Step 3 -> Step 4: กดยกโทษ + Confetti ฉลอง!
-        function forgiveMe() {
-            playChime([523.25, 659.25, 783.99, 1046.5, 1318.5]);
-            launchHeartConfetti();
-            renderPromises();
-            resetLoveMeter();
-            showStep(4);
-        }
-
-        function launchHeartConfetti() {
-            if (typeof confetti !== "function") return;
-            const colors = ["#fb7185", "#f43f5e", "#fda4af", "#fbbf24", "#34d399"];
-            confetti({
-                particleCount: 85,
-                spread: 80,
-                origin: { y: 0.6 },
-                colors: colors
-            });
-            setTimeout(() => {
-                confetti({
-                    particleCount: 55,
-                    angle: 60,
-                    spread: 55,
-                    origin: { x: 0 },
-                    colors: colors
-                });
-                confetti({
-                    particleCount: 55,
-                    angle: 120,
-                    spread: 55,
-                    origin: { x: 1 },
-                    colors: colors
-                });
-            }, 300);
-        }
-
-        // Step 4 (ส่วนที่ 1): แคปซูลสัญญาใจในโหลแก้ว (Promises Jar)
-        function renderPromises() {
-            const listEl = document.getElementById("promises-list");
-            const promises = appData.promises || defaultAppData.promises;
-            const openedCount = promises.filter(p => p.opened).length;
-
-            document.getElementById("promises-opened-count").textContent = openedCount;
-            document.getElementById("promises-total-count").textContent = promises.length;
-
-            listEl.innerHTML = promises.map((item, index) => {
-                if (item.opened) {
-                    return `
-                        <div class="promise-opened bg-white/95 border-2 border-rose-200 rounded-2xl p-4 text-center shadow-sm flex flex-col items-center justify-center min-h-[115px] relative">
-                            <span class="text-2xl mb-1.5">${escapeHtml(item.icon || "💖")}</span>
-                            <p class="text-rose-900 font-semibold text-xs sm:text-sm leading-relaxed">
-                                "${escapeHtml(item.text)}"
-                            </p>
-                            <span class="absolute top-2 right-2.5 text-[10px] text-amber-500 font-bold">✨ สัญญาแล้วคั้บ</span>
-                        </div>
-                    `;
-                } else {
-                    return `
-                        <button type="button" onclick="openPromiseCapsule(${index})" class="group bg-white/75 hover:bg-white border-2 border-dashed border-amber-300 hover:border-rose-400 rounded-2xl p-4 text-center transition-all duration-200 transform hover:-translate-y-0.5 active:scale-95 flex flex-col items-center justify-center min-h-[115px] shadow-xs">
-                            <div class="w-11 h-11 rounded-full bg-gradient-to-tr from-amber-200 to-rose-200 flex items-center justify-center text-2xl mb-2 shadow-xs group-hover:scale-110 transition">
-                                ${escapeHtml(item.icon || "⭐")}
-                            </div>
-                            <span class="text-xs font-bold text-rose-700 group-hover:text-rose-500">
-                                แตะเพื่อเปิดคำสัญญา #${index + 1}
-                            </span>
-                        </button>
-                    `;
-                }
-            }).join("");
-        }
-
-        function openPromiseCapsule(index) {
-            const promises = appData.promises;
-            if (!promises[index] || promises[index].opened) return;
-
-            promises[index].opened = true;
-            saveToStorage();
-            renderPromises();
-            playChime([659.25, 880, 1046.5]);
-
-            const allOpened = promises.every(p => p.opened);
-            if (allOpened) {
-                launchHeartConfetti();
-                showToast("เปิดครบทุกคำสัญญาแล้ว เค้าจะรักษาสัญญาทุกข้อเลยนะคั้บ! 💖✨");
-            }
-        }
-
-        // Step 4 (ส่วนที่ 2): โหมดส่งกอด & หลอดวัดความรัก (Virtual Hug & Love Meter)
-        const hugMessages = [
-            "งื้อออ อุ่นจังเลยคั้บ! ขอบคุณสำหรับกอดนะ 🥺💕",
-            "กอดแน่นขึ้นอีกนิด พลังใจกลับมาเต็มเปี่ยมแล้วคั้บ! 🧸✨",
-            "ยิ่งกอดยิ่งรักเธอมากขึ้นทุกวันเลยรู้ไหมคั้บ 💖",
-            "เย้! หลอดความรักเต็ม 100% แล้ว รักเธอที่สุดในจักรวาลเลยคั้บผม! 🎉🥰"
-        ];
-
-        function resetLoveMeter() {
-            loveMeterValue = 50;
-            hugCount = 0;
-            updateLoveMeterUI();
-            document.getElementById("hug-feedback-text").textContent = "กดปุ่มส่งกอดด้านล่างเพื่อเติมหลอดความรักให้เต็ม 100% เลยคั้บ!";
-        }
-
-        function sendVirtualHug() {
-            hugCount++;
-            loveMeterValue = Math.min(loveMeterValue + 15, 100);
-            playChime([523.25, 659.25, 783.99]);
-
-            // แอนิเมชันน้องหมีกอดเด้งดึ๋ง + แก้มแดงเข้มขึ้น
-            const bearWrapper = document.getElementById("hug-bear-wrapper");
-            bearWrapper.classList.remove("animate-hug");
-            void bearWrapper.offsetWidth;
-            bearWrapper.classList.add("animate-hug");
-
-            document.getElementById("bear-cheek-left").setAttribute("opacity", "0.95");
-            document.getElementById("bear-cheek-right").setAttribute("opacity", "0.95");
-
-            // ปล่อยหัวใจลอยขึ้นรอบๆ
-            spawnBurstHearts();
-            updateLoveMeterUI();
-
-            const feedbackEl = document.getElementById("hug-feedback-text");
-            if (loveMeterValue >= 100) {
-                feedbackEl.textContent = hugMessages[3];
-                feedbackEl.className = "text-xs sm:text-sm font-bold text-emerald-600 mb-4 min-h-[20px]";
-                if (hugCount === 4) {
-                    launchHeartConfetti();
-                }
-            } else {
-                const msg = hugMessages[Math.min(hugCount - 1, 2)];
-                feedbackEl.textContent = msg;
-                feedbackEl.className = "text-xs sm:text-sm font-semibold text-rose-600 mb-4 min-h-[20px]";
-            }
-        }
-
-        function updateLoveMeterUI() {
-            const bar = document.getElementById("love-meter-bar");
-            const percentText = document.getElementById("love-meter-percent");
-            bar.style.width = loveMeterValue + "%";
-            percentText.textContent = loveMeterValue >= 100 ? "100% (เต็มล้นใจ!)" : loveMeterValue + "%";
-        }
-
-        function spawnBurstHearts() {
-            const container = document.getElementById("floating-hearts-container");
-            const emojis = ["🫂", "💖", "💕", "🥰", "✨"];
-            for (let i = 0; i < 6; i++) {
-                const el = document.createElement("div");
-                el.className = "floating-bg-heart";
-                el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-                el.style.left = (25 + Math.random() * 50) + "vw";
-                el.style.bottom = "25vh";
-                el.style.fontSize = (20 + Math.random() * 14) + "px";
-                el.style.animationDuration = (2.5 + Math.random() * 1.5) + "s";
-                container.appendChild(el);
-                setTimeout(() => el.remove(), 4000);
-            }
-        }
-
-        function restartExperience() {
-            const wrapper = document.getElementById("envelope-wrapper");
-            wrapper.classList.remove("envelope-open");
-            wrapper.classList.add("animate-wiggle");
-            showStep(1);
-        }
-
-        // ==========================================
-        // 6. RENDER ALL DYNAMIC TEXTS
-        // ==========================================
-        function renderAllData() {
-            document.querySelectorAll(".partner-name-display").forEach(el => {
-                el.textContent = appData.partnerName;
-            });
-            document.querySelectorAll(".sender-name-display").forEach(el => {
-                el.textContent = appData.senderName;
-            });
-
-            document.getElementById("apology-title-display").textContent = appData.apologyTitle;
-            document.getElementById("apology-body-display").textContent = appData.apologyBody;
-            document.getElementById("final-letter-display").textContent = appData.finalLetter;
-
-            renderThankYouCard();
-            renderPromises();
-        }
-
-        // ==========================================
-        // 7. CUSTOMIZATION MODAL (โหมดแก้ไขข้อความ)
-        // ==========================================
-        function openEditModal() {
-            document.getElementById("input-partner-name").value = appData.partnerName;
-            document.getElementById("input-sender-name").value = appData.senderName;
-            document.getElementById("input-apology-title").value = appData.apologyTitle;
-            document.getElementById("input-apology-body").value = appData.apologyBody;
-            document.getElementById("input-final-letter").value = appData.finalLetter;
-
-            // เติมข้อมูลการ์ดขอบคุณทั้ง 4 ใบ
-            const cardsContainer = document.getElementById("edit-cards-container");
-            cardsContainer.innerHTML = appData.cards.map((c, idx) => `
-                <div class="p-3 rounded-2xl bg-rose-50/70 border border-rose-200 space-y-2">
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs font-bold text-rose-600">ใบที่ ${idx + 1}</span>
-                        <input id="edit-card-emoji-${idx}" type="text" value="${escapeHtml(c.emoji)}" class="w-12 text-center px-1.5 py-1 rounded-lg border border-rose-200 bg-white text-sm" placeholder="💖">
-                        <input id="edit-card-title-${idx}" type="text" value="${escapeHtml(c.title)}" class="flex-1 px-2.5 py-1 rounded-lg border border-rose-200 bg-white text-xs font-semibold" placeholder="หัวข้อขอบคุณ">
-                    </div>
-                    <textarea id="edit-card-text-${idx}" rows="2" class="w-full px-2.5 py-1.5 rounded-lg border border-rose-200 bg-white text-xs" placeholder="ข้อความซึ้งๆ">${escapeHtml(c.text)}</textarea>
-                    <input id="edit-card-img-${idx}" type="url" value="${escapeHtml(c.imageUrl || '')}" class="w-full px-2.5 py-1 rounded-lg border border-rose-200 bg-white text-xs" placeholder="ลิงก์รูปภาพคู่ของเรา (ไม่ใส่ก็ได้ จะแสดงอีโมจิแทน)">
-                </div>
-            `).join("");
-
-            // เติมข้อมูลคำสัญญาใจ
-            const promisesList = appData.promises || defaultAppData.promises;
-            const promiseLines = promisesList.map(p => `${p.icon} ${p.text}`).join("\n");
-            document.getElementById("input-promises").value = promiseLines;
-
-            const modal = document.getElementById("edit-modal");
-            modal.classList.remove("hidden");
-            modal.classList.add("flex");
-        }
-
-        function closeEditModal() {
-            const modal = document.getElementById("edit-modal");
-            modal.classList.add("hidden");
-            modal.classList.remove("flex");
-        }
-
-        function collectFormData() {
-            appData.partnerName = document.getElementById("input-partner-name").value.trim() || defaultAppData.partnerName;
-            appData.senderName = document.getElementById("input-sender-name").value.trim() || defaultAppData.senderName;
-            appData.apologyTitle = document.getElementById("input-apology-title").value.trim() || defaultAppData.apologyTitle;
-            appData.apologyBody = document.getElementById("input-apology-body").value.trim() || defaultAppData.apologyBody;
-            appData.finalLetter = document.getElementById("input-final-letter").value.trim() || defaultAppData.finalLetter;
-
-            appData.cards = appData.cards.map((c, idx) => ({
-                emoji: document.getElementById(`edit-card-emoji-${idx}`).value.trim() || "💖",
-                title: document.getElementById(`edit-card-title-${idx}`).value.trim() || c.title,
-                text: document.getElementById(`edit-card-text-${idx}`).value.trim() || c.text,
-                imageUrl: document.getElementById(`edit-card-img-${idx}`).value.trim()
-            }));
-
-            const rawPromises = document.getElementById("input-promises").value.trim().split("\n").filter(line => line.trim() !== "");
-            if (rawPromises.length > 0) {
-                appData.promises = rawPromises.map(line => {
-                    const trimmed = line.trim();
-                    const firstSpace = trimmed.indexOf(" ");
-                    let icon = "🌟";
-                    let text = trimmed;
-                    if (firstSpace > 0 && firstSpace <= 4) {
-                        icon = trimmed.substring(0, firstSpace);
-                        text = trimmed.substring(firstSpace + 1).trim();
+                            const copyFallbackBtn = document.getElementById("copy-reply-fallback-btn");
+                            if (copyFallbackBtn) {
+                                copyFallbackBtn.addEventListener("click", function () {
+                                    copyTextFallback(formattedSummary, "คัดลอกข้อความตอบกลับแล้วคั้บ! วางส่งใน LINE ได้เลย 💖");
+                                });
+                            }
+                        }
+                        showToast("ส่งข้อความถึงเค้าเรียบร้อยแล้วคั้บ! 💌");
+                    } else {
+                        throw new Error("Formspree response not ok");
                     }
-                    return { icon, text, opened: false };
-                });
+                } catch (error) {
+                    playChime([392, 349.23]);
+                    if (statusBox) {
+                        statusBox.classList.remove("hidden");
+                        statusBox.className = "rounded-2xl p-4 text-xs sm:text-sm leading-relaxed space-y-2.5 bg-amber-50 border-2 border-amber-300 text-amber-900";
+                        statusBox.innerHTML = `
+                            <p class="font-bold text-amber-800">⚠️ ส่งผ่านระบบอัตโนมัติไม่สำเร็จชั่วคราวคั้บ</p>
+                            <p class="text-xs">กดปุ่มด้านล่างเพื่อคัดลอกข้อความแล้วส่งให้เค้าในแชท LINE แทนได้เลยนะคั้บผม 🥺</p>
+                            <button type="button" id="copy-reply-error-btn" class="w-full py-2.5 px-3 rounded-xl bg-rose-500 hover:bg-rose-600 text-white text-xs font-bold transition">
+                                📋 คัดลอกข้อความตอบกลับส่งใน LINE คั้บ
+                            </button>
+                        `;
+                        const copyErrBtn = document.getElementById("copy-reply-error-btn");
+                        if (copyErrBtn) {
+                            copyErrBtn.addEventListener("click", function () {
+                                copyTextFallback(formattedSummary, "คัดลอกข้อความแล้วคั้บ! วางส่งใน LINE ได้เลย 💌");
+                            });
+                        }
+                    }
+                } finally {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.classList.remove("opacity-75", "cursor-not-allowed");
+                    }
+                    if (submitIcon) submitIcon.textContent = "📨";
+                    if (submitText) submitText.textContent = "ส่งข้อความตอบกลับให้เค้าคั้บ";
+                }
             }
-        }
 
-        function saveCustomData() {
-            collectFormData();
-            saveToStorage();
-            renderAllData();
-            closeEditModal();
-            restartExperience();
-            showToast("บันทึกข้อความเรียบร้อยแล้ว! ✨");
-        }
+            function restartExperience() {
+                const wrapper = document.getElementById("envelope-wrapper");
+                if (wrapper) {
+                    wrapper.classList.remove("envelope-open");
+                    wrapper.classList.add("animate-wiggle");
+                    wrapper.dataset.opening = "false";
+                }
+                showStep(1);
+            }
 
-        function resetToDefault() {
-            appData = JSON.parse(JSON.stringify(defaultAppData));
-            localStorage.removeItem("loveSurpriseData_v1");
-            history.replaceState(null, "", window.location.pathname);
-            openEditModal();
-            renderAllData();
-            showToast("รีเซ็ตเป็นข้อความเริ่มต้นแล้ว 🔄");
-        }
+            // ==========================================
+            // 8. DATA PERSISTENCE & RENDERING
+            // ==========================================
+            function loadAppData() {
+                try {
+                    // Check URL Hash first (#gift=...)
+                    if (window.location.hash && window.location.hash.startsWith("#gift=")) {
+                        const encoded = window.location.hash.substring(6);
+                        const jsonStr = decodeURIComponent(escape(atob(encoded)));
+                        const parsedHash = JSON.parse(jsonStr);
+                        if (parsedHash && typeof parsedHash === "object") {
+                            appData = Object.assign({}, JSON.parse(JSON.stringify(defaultAppData)), parsedHash);
+                            return;
+                        }
+                    }
 
-        function copyShareableLink() {
-            try {
+                    // Fallback to localStorage
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (saved) {
+                        const parsed = JSON.parse(saved);
+                        if (parsed && typeof parsed === "object") {
+                            appData = Object.assign({}, JSON.parse(JSON.stringify(defaultAppData)), parsed);
+                        }
+                    }
+                } catch (e) {
+                    appData = JSON.parse(JSON.stringify(defaultAppData));
+                }
+            }
+
+            function saveToStorage() {
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+                } catch (e) {
+                    // Ignore storage quota errors
+                }
+            }
+
+            function renderAllData() {
+                document.querySelectorAll(".partner-name-display").forEach(function (el) {
+                    el.textContent = appData.partnerName;
+                });
+                document.querySelectorAll(".sender-name-display").forEach(function (el) {
+                    el.textContent = appData.senderName;
+                });
+
+                const apolTitle = document.getElementById("apology-title-display");
+                const apolBody = document.getElementById("apology-body-display");
+                const finalLetter = document.getElementById("final-letter-display");
+
+                if (apolTitle) apolTitle.textContent = appData.apologyTitle;
+                if (apolBody) apolBody.textContent = appData.apologyBody;
+                if (finalLetter) finalLetter.textContent = appData.finalLetter;
+
+                renderThankYouCard();
+                renderPromises();
+            }
+
+            // ==========================================
+            // 9. CUSTOMIZATION MODAL
+            // ==========================================
+            function openEditModal() {
+                const partnerInput = document.getElementById("input-partner-name");
+                const senderInput = document.getElementById("input-sender-name");
+                const apolTitleInput = document.getElementById("input-apology-title");
+                const apolBodyInput = document.getElementById("input-apology-body");
+                const letterInput = document.getElementById("input-final-letter");
+                const formspreeInput = document.getElementById("input-formspree-url");
+                const promisesInput = document.getElementById("input-promises");
+                const cardsContainer = document.getElementById("edit-cards-container");
+
+                if (partnerInput) partnerInput.value = appData.partnerName;
+                if (senderInput) senderInput.value = appData.senderName;
+                if (apolTitleInput) apolTitleInput.value = appData.apologyTitle;
+                if (apolBodyInput) apolBodyInput.value = appData.apologyBody;
+                if (letterInput) letterInput.value = appData.finalLetter;
+                if (formspreeInput) formspreeInput.value = appData.formspreeUrl || DEFAULT_FORMSPREE_URL;
+
+                if (cardsContainer) {
+                    cardsContainer.innerHTML = appData.cards.map(function (c, idx) {
+                        return `
+                            <div class="p-3 rounded-2xl bg-rose-50/70 border border-rose-200 space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs font-bold text-rose-600">ใบที่ ${idx + 1}</span>
+                                    <input id="edit-card-emoji-${idx}" type="text" value="${escapeHtml(c.emoji)}" class="w-12 text-center px-1.5 py-1 rounded-lg border border-rose-200 bg-white text-sm">
+                                    <input id="edit-card-title-${idx}" type="text" value="${escapeHtml(c.title)}" class="flex-1 px-2.5 py-1 rounded-lg border border-rose-200 bg-white text-xs font-semibold">
+                                </div>
+                                <textarea id="edit-card-text-${idx}" rows="2" class="w-full px-2.5 py-1.5 rounded-lg border border-rose-200 bg-white text-xs">${escapeHtml(c.text)}</textarea>
+                                <input id="edit-card-img-${idx}" type="url" value="${escapeHtml(c.imageUrl || "")}" class="w-full px-2.5 py-1 rounded-lg border border-rose-200 bg-white text-xs" placeholder="ลิงก์รูปภาพคู่ของเรา (เว้นว่างได้คั้บ)">
+                            </div>
+                        `;
+                    }).join("");
+                }
+
+                if (promisesInput) {
+                    const promisesList = appData.promises || defaultAppData.promises;
+                    promisesInput.value = promisesList.map(function (p) {
+                        return `${p.icon} ${p.text}`;
+                    }).join("\n");
+                }
+
+                const modal = document.getElementById("edit-modal");
+                if (modal) {
+                    modal.classList.remove("hidden");
+                    modal.classList.add("flex");
+                }
+            }
+
+            function closeEditModal() {
+                const modal = document.getElementById("edit-modal");
+                if (modal) {
+                    modal.classList.add("hidden");
+                    modal.classList.remove("flex");
+                }
+            }
+
+            function collectFormData() {
+                const partnerVal = document.getElementById("input-partner-name").value.trim();
+                const senderVal = document.getElementById("input-sender-name").value.trim();
+                const apolTitleVal = document.getElementById("input-apology-title").value.trim();
+                const apolBodyVal = document.getElementById("input-apology-body").value.trim();
+                const letterVal = document.getElementById("input-final-letter").value.trim();
+                const formspreeVal = document.getElementById("input-formspree-url").value.trim();
+
+                appData.partnerName = partnerVal || defaultAppData.partnerName;
+                appData.senderName = senderVal || defaultAppData.senderName;
+                appData.apologyTitle = apolTitleVal || defaultAppData.apologyTitle;
+                appData.apologyBody = apolBodyVal || defaultAppData.apologyBody;
+                appData.finalLetter = letterVal || defaultAppData.finalLetter;
+                appData.formspreeUrl = formspreeVal || DEFAULT_FORMSPREE_URL;
+
+                appData.cards = appData.cards.map(function (c, idx) {
+                    const emojiEl = document.getElementById("edit-card-emoji-" + idx);
+                    const titleEl = document.getElementById("edit-card-title-" + idx);
+                    const textEl = document.getElementById("edit-card-text-" + idx);
+                    const imgEl = document.getElementById("edit-card-img-" + idx);
+                    return {
+                        emoji: (emojiEl && emojiEl.value.trim()) || "💖",
+                        title: (titleEl && titleEl.value.trim()) || c.title,
+                        text: (textEl && textEl.value.trim()) || c.text,
+                        imageUrl: (imgEl && imgEl.value.trim()) || ""
+                    };
+                });
+
+                const rawPromises = document.getElementById("input-promises").value.trim().split("\n").filter(function (line) {
+                    return line.trim() !== "";
+                });
+                if (rawPromises.length > 0) {
+                    appData.promises = rawPromises.map(function (line) {
+                        const trimmed = line.trim();
+                        const firstSpace = trimmed.indexOf(" ");
+                        let icon = "🌟";
+                        let text = trimmed;
+                        if (firstSpace > 0 && firstSpace <= 4) {
+                            icon = trimmed.substring(0, firstSpace);
+                            text = trimmed.substring(firstSpace + 1).trim();
+                        }
+                        return { icon: icon, text: text, opened: false };
+                    });
+                }
+            }
+
+            function saveCustomData() {
                 collectFormData();
                 saveToStorage();
                 renderAllData();
-
-                // เข้ารหัสข้อมูลเป็น Base64 ไว้ใน URL Hash
-                const jsonStr = JSON.stringify(appData);
-                const encoded = btoa(unescape(encodeURIComponent(jsonStr)));
-                const baseUrl = window.location.href.split("#")[0];
-                const shareUrl = `${baseUrl}#gift=${encoded}`;
-
-                // ใช้ textarea + execCommand('copy') เพื่อรองรับทุกสภาพแวดล้อมรวมถึง iFrame
-                const tempInput = document.createElement("textarea");
-                tempInput.value = shareUrl;
-                document.body.appendChild(tempInput);
-                tempInput.select();
-                document.execCommand("copy");
-                document.body.removeChild(tempInput);
-
-                const btnText = document.getElementById("copy-link-text");
-                btnText.textContent = "คัดลอกลิงก์สำเร็จแล้ว! ✓";
-                setTimeout(() => {
-                    btnText.textContent = "คัดลอกลิงก์ที่ฝังข้อความแล้ว";
-                }, 2500);
-                showToast("คัดลอกลิงก์แล้ว! นำไปวางส่งให้แฟนได้เลย 💌");
-            } catch (e) {
-                showToast("บันทึกข้อความเรียบร้อยแล้ว ✨");
+                closeEditModal();
+                restartExperience();
+                showToast("บันทึกข้อความเรียบร้อยแล้วคั้บ! ✨");
             }
-        }
 
-        // ==========================================
-        // 8. UTILITIES
-        // ==========================================
-        function showToast(message) {
-            const toast = document.getElementById("toast-box");
-            toast.textContent = message;
-            toast.classList.remove("hidden");
-            setTimeout(() => {
-                toast.classList.add("hidden");
-            }, 3000);
-        }
+            function resetToDefault() {
+                appData = JSON.parse(JSON.stringify(defaultAppData));
+                try {
+                    localStorage.removeItem(STORAGE_KEY);
+                    history.replaceState(null, "", window.location.pathname);
+                } catch (e) {}
+                openEditModal();
+                renderAllData();
+                showToast("รีเซ็ตเป็นข้อความเริ่มต้นแล้วคั้บ 🔄");
+            }
 
-        function escapeHtml(str) {
-            if (!str) return "";
-            return String(str)
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-        }
+            function copyShareableLink() {
+                try {
+                    collectFormData();
+                    saveToStorage();
+                    renderAllData();
+
+                    const jsonStr = JSON.stringify(appData);
+                    const encoded = btoa(unescape(encodeURIComponent(jsonStr)));
+                    const baseUrl = window.location.href.split("#")[0];
+                    const shareUrl = `${baseUrl}#gift=${encoded}`;
+
+                    copyTextFallback(shareUrl, "คัดลอกลิงก์แล้วคั้บ! นำไปวางส่งให้แฟนได้เลย 💌");
+                    const btnText = document.getElementById("copy-link-text");
+                    if (btnText) {
+                        btnText.textContent = "คัดลอกลิงก์สำเร็จแล้วคั้บ! ✓";
+                        setTimeout(function () {
+                            btnText.textContent = "คัดลอกลิงก์ที่ฝังข้อความแล้วคั้บ";
+                        }, 2500);
+                    }
+                } catch (e) {
+                    showToast("บันทึกข้อความเรียบร้อยแล้วคั้บ ✨");
+                }
+            }
+
+            // ==========================================
+            // 10. UTILITIES
+            // ==========================================
+            function copyTextFallback(text, successMsg) {
+                try {
+                    const tempInput = document.createElement("textarea");
+                    tempInput.value = text;
+                    tempInput.style.position = "fixed";
+                    tempInput.style.opacity = "0";
+                    document.body.appendChild(tempInput);
+                    tempInput.focus();
+                    tempInput.select();
+                    document.execCommand("copy");
+                    document.body.removeChild(tempInput);
+                    if (successMsg) showToast(successMsg);
+                } catch (e) {
+                    showToast("คัดลอกข้อความเรียบร้อยแล้วคั้บ 💖");
+                }
+            }
+
+            let toastTimer = null;
+            function showToast(message) {
+                const toast = document.getElementById("toast-box");
+                if (!toast) return;
+                toast.textContent = message;
+                toast.classList.remove("hidden");
+                if (toastTimer) clearTimeout(toastTimer);
+                toastTimer = setTimeout(function () {
+                    toast.classList.add("hidden");
+                }, 3200);
+            }
+
+            function escapeHtml(str) {
+                if (str === null || str === undefined) return "";
+                return String(str)
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+            }
+
+            // ==========================================
+            // 11. INITIALIZE EVENT LISTENERS ON LOAD
+            // ==========================================
+            function initApp() {
+                loadAppData();
+                renderAllData();
+
+                // Background hearts interval
+                setInterval(spawnBgHeart, 1300);
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(spawnBgHeart, i * 250);
+                }
+
+                // Bind Top Controls
+                const soundBtn = document.getElementById("sound-toggle-btn");
+                if (soundBtn) soundBtn.addEventListener("click", toggleSound);
+
+                const editBtn = document.getElementById("edit-mode-btn");
+                if (editBtn) editBtn.addEventListener("click", openEditModal);
+
+                // Bind Stage 1 Envelope
+                const envWrapper = document.getElementById("envelope-wrapper");
+                if (envWrapper) envWrapper.addEventListener("click", openEnvelope);
+
+                const openEnvBtn = document.getElementById("open-envelope-btn");
+                if (openEnvBtn) openEnvBtn.addEventListener("click", openEnvelope);
+
+                // Bind Stage 2 Cards
+                const cardContainer = document.getElementById("thankyou-card-container");
+                if (cardContainer) cardContainer.addEventListener("click", nextThankYouCard);
+
+                const prevCardBtn = document.getElementById("prev-card-btn");
+                if (prevCardBtn) prevCardBtn.addEventListener("click", prevThankYouCard);
+
+                const nextCardBtn = document.getElementById("next-card-btn");
+                if (nextCardBtn) nextCardBtn.addEventListener("click", nextThankYouCard);
+
+                // Bind Stage 3 Apology Buttons
+                const forgiveBtn = document.getElementById("forgive-btn");
+                if (forgiveBtn) forgiveBtn.addEventListener("click", forgiveMe);
+
+                const sulkingBtn = document.getElementById("sulking-btn");
+                if (sulkingBtn) {
+                    sulkingBtn.addEventListener("click", handleSulkingClick);
+                }
+
+                // Bind Stage 4 Hug, Mood Tags, Reply Form & Restart
+                const sendHugBtn = document.getElementById("send-hug-btn");
+                if (sendHugBtn) sendHugBtn.addEventListener("click", sendVirtualHug);
+
+                document.querySelectorAll(".mood-tag-btn").forEach(function (btn) {
+                    btn.addEventListener("click", function () {
+                        selectMoodTag(btn);
+                    });
+                });
+
+                const replyForm = document.getElementById("reply-form");
+                if (replyForm) replyForm.addEventListener("submit", submitReplyToFormspree);
+
+                const restartBtn = document.getElementById("restart-btn");
+                if (restartBtn) restartBtn.addEventListener("click", restartExperience);
+
+                // Bind Modal Buttons
+                const closeModalBtn = document.getElementById("close-edit-modal-btn");
+                if (closeModalBtn) closeModalBtn.addEventListener("click", closeEditModal);
+
+                const cancelEditBtn = document.getElementById("cancel-edit-btn");
+                if (cancelEditBtn) cancelEditBtn.addEventListener("click", closeEditModal);
+
+                const saveCustomBtn = document.getElementById("save-custom-btn");
+                if (saveCustomBtn) saveCustomBtn.addEventListener("click", saveCustomData);
+
+                const resetDefaultBtn = document.getElementById("reset-default-btn");
+                if (resetDefaultBtn) resetDefaultBtn.addEventListener("click", resetToDefault);
+
+                const copyShareBtn = document.getElementById("copy-share-link-btn");
+                if (copyShareBtn) copyShareBtn.addEventListener("click", copyShareableLink);
+            }
+
+            if (document.readyState === "loading") {
+                document.addEventListener("DOMContentLoaded", initApp);
+            } else {
+                initApp();
+            }
+        })();
     </script>
 </body>
 </html>
